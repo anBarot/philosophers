@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 16:47:16 by abarot            #+#    #+#             */
-/*   Updated: 2021/02/16 19:39:10 by abarot           ###   ########.fr       */
+/*   Updated: 2021/02/16 21:01:00 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*ft_itoa_time(int nbr)
 
 void ft_display_action(int nb, char *action)
 {
-	if (g_philo.ending == false)
+	if (g_philo.is_dead == false)
 	{
 		pthread_mutex_lock(&(g_philo.display_mutex));
 		write(1, ft_itoa_time(ft_get_timelaps()), 12);
@@ -52,7 +52,6 @@ void ft_display_action(int nb, char *action)
 		write(1, "> ", 2);
 		write(1, " ", 1);
 		write(1, action, ft_strlen(action));
-		write(1, "\n", 1);
 		pthread_mutex_unlock(&(g_philo.display_mutex));
 	}
 }

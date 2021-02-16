@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/02/16 19:39:16 by abarot           ###   ########.fr       */
+/*   Updated: 2021/02/16 21:05:08 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,18 @@
 
 void	*death_monitor_routine(void *arg)
 {
-	int i;
+	t_thread *philo;
 
-	death_monitor.last_time_eat = ft_get_timelaps();
-	while (g_philo.ending == false)
+	philo = (t_thread *)arg;
+	while (g_philo.is_dead == false)
 	{
-		i = 0;
-		while (i < g_philo.philo_nb)
+		if ((ft_get_timelaps() - philo->last_time_eat) > g_philo.time_to_die)
 		{
-			if ((ft_get_timelaps() - g_death_monitor.last_time_eat[i]) 
-				> g_philo.time_to_die)
-			{
-				g_philo.ending = true;
-				g_death_monitor.who_died = i;
-				break;
-			}
-			i++;
+			ft_display_action(philo->philo_nbr, S_DIE);
+			pthread_mutex_lock(&g_philo.display_mutex);
+			g_philo.is_dead = true;
 		}
+		// usleep(1000);
 	}
 	return (NULL);
 }
@@ -42,7 +37,7 @@ void	ft_eating_routine_even(t_thread *philo)
 	pthread_mutex_lock(&(g_philo.forks_mutex[(philo->philo_nbr + 1) % g_philo.philo_nb]));
 	ft_display_action(philo->philo_nbr, S_FORK);
 	ft_display_action(philo->philo_nbr, S_EAT);
-	death_monitor.last_time_eat[philo->philo_nbr] = ft_get_timelaps();
+	philo->last_time_eat = ft_get_timelaps();
 	usleep(g_philo.time_to_eat * 1000);
 	philo->meal_nb = philo->meal_nb + 1;
 	pthread_mutex_unlock(&(g_philo.forks_mutex[philo->philo_nbr]));
@@ -59,9 +54,16 @@ void	ft_eating_routine_odd(t_thread *philo)
 	pthread_mutex_lock(&(g_philo.forks_mutex[philo->philo_nbr]));
 	ft_display_action(philo->philo_nbr, S_FORK);
 	ft_display_action(philo->philo_nbr, S_EAT);
-	death_monitor.last_time_eat[philo->philo_nbr] = ft_get_timelaps();
+	philo->last_time_eat = ft_get_timelaps();
 	usleep(g_philo.time_to_eat * 1000);
 	philo->meal_nb = philo->meal_nb + 1;
+	if (g_philo.is_limited_meal == true && philo->meal_nb == g_philo.meal_limit)
+	{
+		pthread_mutex_lock(&g_philo.limit_reached_mutex);
+		ft_display_action(philo->philo_nbr, S_REACHED);
+		pthread_mutex_lock(&g_philo.display_mutex);
+		g_philo.is_limit_reached = true;
+	}
 	pthread_mutex_unlock(&(g_philo.forks_mutex[philo->philo_nbr]));
 	pthread_mutex_unlock(&(g_philo.forks_mutex[(philo->philo_nbr + 1) % g_philo.philo_nb]));
 	ft_display_action(philo->philo_nbr, S_SLEEP);
@@ -72,16 +74,16 @@ void	ft_eating_routine_odd(t_thread *philo)
 void	*philo_routine(void *arg)
 {
 	t_thread *philo;
-	t_death_monitor death_monitor;
 	int err;
 
 	philo = (t_thread *)arg;
-	if ((err = pthread_create(&(death_monitor.tid), NULL, death_monitor_routine, philo)))
+	pthread_mutex_init(&philo->death_monitor_mutex, NULL);
+	if ((err = pthread_create(&(philo->death_monitor_tid), NULL, death_monitor_routine, philo)))
 	{
 		write(1, S_ERR_thread, ft_strlen(S_ERR_thread));
-		return (EXIT_FAILURE);
+		return (NULL);
 	}
-	pthread_detach(death_monitor.tid);
+	pthread_detach(philo->death_monitor_tid);
 	while (g_philo.is_limited_meal == false || (g_philo.is_limited_meal == true && philo->meal_nb != g_philo.meal_limit))
 	{
 		if (philo->philo_nbr % 2 == 0)

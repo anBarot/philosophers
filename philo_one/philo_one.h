@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/02/16 18:52:43 by abarot           ###   ########.fr       */
+/*   Updated: 2021/02/16 21:00:48 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,14 @@
 #include <sys/time.h>
 #include <stdbool.h>
 
-#define S_FORK			"has taken a fork"
-#define S_EAT			"is eating"
-#define S_SLEEP			"is sleeping"
-#define S_THINK			"is thinking"
-#define S_DIE			"died"
+#define S_FORK			"has taken a fork\n"
+#define S_EAT			"is eating\n"
+#define S_SLEEP			"is sleeping\n"
+#define S_THINK			"is thinking\n"
+#define S_DIE			"died\n"
+#define S_REACHED		"has reached meal limit\n"
 #define S_ERR_thread	"\nError : can't create thread\n"
 #define t_timeval		struct timeval
-
-enum	e_action_nb
-{
-	FORK,
-	EAT,
-	SLEEP,
-	THINK,
-	DIE,
-};
 
 typedef struct		s_philo
 {
@@ -46,9 +38,11 @@ typedef struct		s_philo
 	int				time_to_sleep;
 	int				meal_limit;
 	bool			is_limited_meal;
-	bool			ending;
+	bool			is_dead;
+	bool			is_limit_reached;
 	pthread_mutex_t	display_mutex;
 	pthread_mutex_t	*forks_mutex;
+	pthread_mutex_t	limit_reached_mutex;
 }					t_philo;
 
 typedef struct		s_thread
@@ -56,14 +50,10 @@ typedef struct		s_thread
 	pthread_t 		tid;
 	int				philo_nbr;
 	int				meal_nb;
-}					t_thread;
-
-typedef struct		s_death_monitor
-{
-	pthread_t 		tid;
-	pthread_mutex_t	monitor_mutex;
 	int				last_time_eat;
-}					t_death_monitor;
+	pthread_t 		death_monitor_tid;
+	pthread_mutex_t	death_monitor_mutex;
+}					t_thread;
 
 t_philo g_philo;
 t_timeval g_startime;

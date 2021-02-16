@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/02/16 18:53:53 by abarot           ###   ########.fr       */
+/*   Updated: 2021/02/16 20:54:43 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		ft_set_gphilo(char **av)
 		(g_philo.time_to_sleep = ft_atoi(av[4])) < 0 ||
 		!(g_philo.forks_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * g_philo.philo_nb)) ||
 		(pthread_mutex_init(&g_philo.display_mutex, NULL)) ||
-		(pthread_mutex_init(&g_death_monitor.monitor_mutex, NULL)))
+		(pthread_mutex_init(&g_philo.limit_reached_mutex, NULL)))
 		return (EXIT_FAILURE);
 	while (i < g_philo.philo_nb)
 	{
@@ -31,7 +31,8 @@ int		ft_set_gphilo(char **av)
 			return (EXIT_FAILURE);
 		i++;
 	}
-	g_philo.ending = false;
+	g_philo.is_dead = false;
+	g_philo.is_limit_reached = false;
 	if (av[5])
 	{
 		g_philo.is_limited_meal = true;
