@@ -6,11 +6,11 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/02/17 12:18:02 by abarot           ###   ########.fr       */
+/*   Updated: 2021/03/03 17:21:30 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 int		ft_set_gphilo(char **av)
 {
@@ -21,16 +21,12 @@ int		ft_set_gphilo(char **av)
 		(g_philo.time_to_die = ft_atoi(av[2])) < 0 ||
 		(g_philo.time_to_eat = ft_atoi(av[3])) < 0 ||
 		(g_philo.time_to_sleep = ft_atoi(av[4])) < 0 ||
-		!(g_philo.forks_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * g_philo.philo_nb)) ||
-		(pthread_mutex_init(&g_philo.display_mutex, NULL)) ||
-		(pthread_mutex_init(&g_philo.finished_meal_mutex, NULL)))
+		!(g_philo.forks_sem = sem_open("forks_sem", O_CREAT | O_EXCL, S_IRWXU, g_philo.philo_nb)) ||
+		!(g_philo.takef_sem = sem_open("takef_sem", O_CREAT | O_EXCL, S_IRWXU, 1)) ||
+		!(g_philo.display_sem = sem_open("display_sem", O_CREAT | O_EXCL, S_IRWXU, 1)) ||
+		!(g_philo.finished_meal_sem = sem_open("finished_meal_sem", O_CREAT | O_EXCL, S_IRWXU, 1))
+		)
 		return (EXIT_FAILURE);
-	while (i < g_philo.philo_nb)
-	{
-		if ((pthread_mutex_init(&g_philo.forks_mutex[i], NULL)))
-			return (EXIT_FAILURE);
-		i++;
-	}
 	g_philo.is_dead = false;
 	g_philo.nb_finished_threads = 0;
 	if (av[5])
@@ -73,7 +69,6 @@ int		ft_init_monitor(t_thread *philo)
 	int err;
 
 	err = 0;
-	pthread_mutex_init(&philo->monitor_mutex, NULL);
 	if ((err = pthread_create(&(philo->monitor_tid), NULL, monitor_routine, philo)))
 	{
 		write(1, S_ERR_thread, ft_strlen(S_ERR_thread));

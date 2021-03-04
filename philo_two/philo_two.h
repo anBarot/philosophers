@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/02/17 11:44:05 by abarot           ###   ########.fr       */
+/*   Updated: 2021/03/03 17:21:38 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef philo_two_H
+# define philo_two_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,7 +19,11 @@
 #include <string.h>
 #include <pthread.h>
 #include <sys/time.h>
+#include <sys/stat.h>
+#include <fcntl.h> 
 #include <stdbool.h>
+#include <semaphore.h>
+#include <errno.h>  
 
 #define S_FORK			"has taken a fork\n"
 #define S_EAT			"is eating\n"
@@ -28,10 +32,15 @@
 #define S_DIE			"died\n"
 #define S_REACHED		"has eaten his last meal\n"
 #define S_ERR_thread	"\nError : can't create thread\n"
+#define S_INIT_FAIL		"Initialisation failed\n"
 #define t_timeval		struct timeval
-#define ARG_ERROR		1
-#define THREAD_ERROR	2
-#define MEAL_NB_REACHED	3
+
+enum	e_enum
+{
+	ARG_ERROR,	
+	THREAD_ERROR,	
+	MEAL_NB_REACHED,
+};
 
 typedef struct		s_philo
 {
@@ -43,9 +52,10 @@ typedef struct		s_philo
 	int				nb_finished_threads;
 	bool			is_limited_meal;
 	bool			is_dead;
-	pthread_mutex_t	display_mutex;
-	pthread_mutex_t	*forks_mutex;
-	pthread_mutex_t	finished_meal_mutex;
+	sem_t			*display_sem;
+	sem_t			*takef_sem;
+	sem_t			*forks_sem;
+	sem_t			*finished_meal_sem;
 }					t_philo;
 
 typedef struct		s_thread
@@ -55,7 +65,6 @@ typedef struct		s_thread
 	int				meal_nb;
 	int				last_time_eat;
 	pthread_t 		monitor_tid;
-	pthread_mutex_t	monitor_mutex;
 }					t_thread;
 
 t_philo g_philo;

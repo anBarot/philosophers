@@ -6,11 +6,11 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/02/17 12:36:03 by abarot           ###   ########.fr       */
+/*   Updated: 2021/03/03 17:32:02 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_three.h"
 
 void	*monitor_routine(void *arg)
 {
@@ -23,49 +23,35 @@ void	*monitor_routine(void *arg)
 		if ((ft_get_timelaps() - philo->last_time_eat) > g_philo.time_to_die)
 		{
 			ft_display_action(philo->philo_nbr, S_DIE);
-			pthread_mutex_lock(&g_philo.display_mutex);
+			sem_wait(g_philo.display_sem);
 			g_philo.is_dead = true;
 		}
 		if (g_philo.is_limited_meal == true && philo->meal_nb == g_philo.meal_limit)
 		{
 			ft_display_action(philo->philo_nbr, S_REACHED);
-			pthread_mutex_lock(&g_philo.finished_meal_mutex);
+			sem_wait(g_philo.finished_meal_sem);
 			g_philo.nb_finished_threads = g_philo.nb_finished_threads + 1;
-			pthread_mutex_unlock(&g_philo.finished_meal_mutex);
-			pthread_exit((void *)MEAL_NB_REACHED);
+			sem_post(g_philo.finished_meal_sem);
+			return (NULL);
 		}
 	}
 	return (NULL);
 }
 
-void	ft_eating_routine_even(t_thread *philo)
+void	ft_eating_routine(t_thread *philo)
 {
-	pthread_mutex_lock(&(g_philo.forks_mutex[philo->philo_nbr]));
+	sem_wait(g_philo.takef_sem);
+	sem_wait(g_philo.forks_sem);
 	ft_display_action(philo->philo_nbr, S_FORK);
-	pthread_mutex_lock(&(g_philo.forks_mutex[(philo->philo_nbr + 1) % g_philo.philo_nb]));
+	sem_wait(g_philo.forks_sem);
 	ft_display_action(philo->philo_nbr, S_FORK);
 	ft_display_action(philo->philo_nbr, S_EAT);
-	pthread_mutex_lock(&(philo->monitor_mutex));
-	philo->last_time_eat = ft_get_timelaps();
-	pthread_mutex_unlock(&(philo->monitor_mutex));
-	usleep(g_philo.time_to_eat * 1000);
-	philo->meal_nb = philo->meal_nb + 1;
-	pthread_mutex_unlock(&(g_philo.forks_mutex[(philo->philo_nbr + 1) % g_philo.philo_nb]));
-	pthread_mutex_unlock(&(g_philo.forks_mutex[philo->philo_nbr]));
-}
-
-void	ft_eating_routine_odd(t_thread *philo)
-{
-	pthread_mutex_lock(&(g_philo.forks_mutex[(philo->philo_nbr + 1) % g_philo.philo_nb]));
-	ft_display_action(philo->philo_nbr, S_FORK);
-	pthread_mutex_lock(&(g_philo.forks_mutex[philo->philo_nbr]));
-	ft_display_action(philo->philo_nbr, S_FORK);
-	ft_display_action(philo->philo_nbr, S_EAT);
+	sem_post(g_philo.takef_sem);
 	philo->last_time_eat = ft_get_timelaps();
 	usleep(g_philo.time_to_eat * 1000);
 	philo->meal_nb = philo->meal_nb + 1;
-	pthread_mutex_unlock(&(g_philo.forks_mutex[philo->philo_nbr]));
-	pthread_mutex_unlock(&(g_philo.forks_mutex[(philo->philo_nbr + 1) % g_philo.philo_nb]));
+	sem_post(g_philo.forks_sem);
+	sem_post(g_philo.forks_sem);
 }
 
 void	*philo_routine(void *arg)
@@ -77,13 +63,10 @@ void	*philo_routine(void *arg)
 		return ((void *)THREAD_ERROR);
 	while (1)
 	{
-		if (philo->philo_nbr % 2 == 0)
-			ft_eating_routine_even(philo);
-		else
-			ft_eating_routine_odd(philo);
+		ft_eating_routine(philo);
 		if (g_philo.is_limited_meal == true && philo->meal_nb == g_philo.meal_limit)
 		{
-			pthread_exit((void *)MEAL_NB_REACHED);
+			return (NULL);
 		}
 		ft_display_action(philo->philo_nbr, S_SLEEP);
 		usleep(g_philo.time_to_sleep * 1000);
