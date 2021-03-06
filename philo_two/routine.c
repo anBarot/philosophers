@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/03/03 17:21:53 by abarot           ###   ########.fr       */
+/*   Updated: 2021/03/06 08:49:50 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,6 @@ void	*monitor_routine(void *arg)
 			ft_display_action(philo->philo_nbr, S_DIE);
 			sem_wait(g_philo.display_sem);
 			g_philo.is_dead = true;
-		}
-		if (g_philo.is_limited_meal == true && philo->meal_nb == g_philo.meal_limit)
-		{
-			ft_display_action(philo->philo_nbr, S_REACHED);
-			sem_wait(g_philo.finished_meal_sem);
-			g_philo.nb_finished_threads = g_philo.nb_finished_threads + 1;
-			sem_post(g_philo.finished_meal_sem);
-			return (NULL);
 		}
 	}
 	return (NULL);
@@ -66,6 +58,10 @@ void	*philo_routine(void *arg)
 		ft_eating_routine(philo);
 		if (g_philo.is_limited_meal == true && philo->meal_nb == g_philo.meal_limit)
 		{
+			ft_display_action(philo->philo_nbr, S_REACHED);
+			sem_wait(g_philo.finished_meal_sem);
+			g_philo.nb_finished_threads = g_philo.nb_finished_threads + 1;
+			sem_post(g_philo.finished_meal_sem);
 			return (NULL);
 		}
 		ft_display_action(philo->philo_nbr, S_SLEEP);

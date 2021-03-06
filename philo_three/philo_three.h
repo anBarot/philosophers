@@ -20,10 +20,12 @@
 #include <pthread.h>
 #include <sys/time.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <fcntl.h> 
 #include <stdbool.h>
 #include <semaphore.h>
-#include <errno.h>  
+#include <signal.h>
 
 #define S_FORK			"has taken a fork\n"
 #define S_EAT			"is eating\n"
@@ -37,19 +39,20 @@
 
 enum	e_enum
 {
+	SUCCESS,
 	ARG_ERROR,	
-	THREAD_ERROR,	
+	PROC_ERROR,	
 	MEAL_NB_REACHED,
 };
 
 typedef struct		s_philo
 {
+	pid_t 			*pid;
 	int				philo_nb;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				meal_limit;
-	int				nb_finished_threads;
 	bool			is_limited_meal;
 	bool			is_dead;
 	sem_t			*display_sem;
@@ -58,14 +61,14 @@ typedef struct		s_philo
 	sem_t			*finished_meal_sem;
 }					t_philo;
 
-typedef struct		s_thread
+typedef struct		s_proc
 {
-	pthread_t 		tid;
+	int				status;
 	int				philo_nbr;
 	int				meal_nb;
 	int				last_time_eat;
 	pthread_t 		monitor_tid;
-}					t_thread;
+}					t_proc;
 
 t_philo g_philo;
 t_timeval g_startime;
@@ -77,11 +80,11 @@ int		ft_strlen(char *str);
 void	*ft_calloc(int size);
 void	ft_display_action(int nb, char *action);
 int		ft_get_timelaps();
-int		ft_init_threads();
-void	ft_set_philothreads(t_thread *philo_threads);
+int		ft_init_proc();
+void	ft_set_philothreads(t_proc *philo_threads);
 int		ft_set_gphilo(char **av);
-void	*philo_routine();
-int		ft_init_monitor(t_thread *philo);
-void	*monitor_routine(void *arg);
+void	*ft_philo_routine();
+int		ft_init_monitor(t_proc *philo);
+void	*ft_monitor_routine(void *arg);
 
 #endif
