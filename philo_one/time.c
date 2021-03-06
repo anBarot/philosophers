@@ -6,16 +6,17 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 16:47:16 by abarot            #+#    #+#             */
-/*   Updated: 2021/02/16 21:01:00 by abarot           ###   ########.fr       */
+/*   Updated: 2021/03/06 09:30:15 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-int ft_decimal_nbr(int nbr)
+int		ft_decimal_nbr(int nbr)
 {
-	int i = 1;
+	int i;
 
+	i = 1;
 	while (nbr >= 10)
 	{
 		nbr = nbr / 10;
@@ -41,7 +42,7 @@ char	*ft_itoa_time(int nbr)
 	return (str);
 }
 
-void ft_display_action(int nb, char *action)
+void	ft_display_action(int nb, char *action)
 {
 	if (g_philo.is_dead == false)
 	{
@@ -56,13 +57,13 @@ void ft_display_action(int nb, char *action)
 	}
 }
 
-int ft_get_timelaps()
+int		ft_get_timelaps(void)
 {
-	int	laps;
-	t_timeval end;
+	int				laps;
+	struct timeval	end;
 
 	gettimeofday(&end, NULL);
 	laps = ((end.tv_sec * 1000000 + end.tv_usec) -
-    (g_startime.tv_sec * 1000000 + g_startime.tv_usec)) / 1000;
+	(g_startime.tv_sec * 1000000 + g_startime.tv_usec)) / 1000;
 	return (laps);
 }

@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:08:27 by abarot            #+#    #+#             */
-/*   Updated: 2021/03/03 17:32:02 by abarot           ###   ########.fr       */
+/*   Updated: 2021/03/06 10:48:30 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,23 @@ void	*ft_calloc(int size)
 	return ((void *)res);
 }
 
-int ft_strlen(char *str)
+int		ft_strlen(char *str)
 {
 	int i;
 
 	i = 0;
 	while (*str)
-	{	
+	{
 		str++;
 		i++;
 	}
 	return (i);
 }
 
-int	ft_atoi(char *str)
+int		ft_atoi(char *str)
 {
-	int sign;
-	unsigned int nbr;
+	int				sign;
+	unsigned int	nbr;
 
 	sign = 1;
 	nbr = 0;
@@ -57,13 +57,13 @@ int	ft_atoi(char *str)
 	}
 	while (*str >= '0' && *str <= '9')
 	{
-		nbr = (nbr * 10) + *str - '0'; 
+		nbr = (nbr * 10) + *str - '0';
 		str++;
 	}
 	return (nbr * sign);
 }
 
-void ft_looptoa(int nbr, char *res, char *base)
+void	ft_looptoa(int nbr, char *res, char *base)
 {
 	if (nbr >= ft_strlen(base))
 		ft_looptoa(nbr / ft_strlen(base), res, base);

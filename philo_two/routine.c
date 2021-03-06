@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/03/06 08:49:50 by abarot           ###   ########.fr       */
+/*   Updated: 2021/03/06 10:23:16 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ void	*philo_routine(void *arg)
 	while (1)
 	{
 		ft_eating_routine(philo);
-		if (g_philo.is_limited_meal == true && philo->meal_nb == g_philo.meal_limit)
+		if (g_philo.is_limited_meal == true &&
+				philo->meal_nb == g_philo.meal_limit)
 		{
 			ft_display_action(philo->philo_nbr, S_REACHED);
 			sem_wait(g_philo.finished_meal_sem);

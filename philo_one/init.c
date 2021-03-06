@@ -6,49 +6,44 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/02/17 12:18:02 by abarot           ###   ########.fr       */
+/*   Updated: 2021/03/06 09:59:23 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-int		ft_set_gphilo(char **av)
+int		ft_set_gphilo(void)
 {
 	int i;
 
 	i = 0;
-	if ((g_philo.philo_nb = ft_atoi(av[1])) < 2 ||
-		(g_philo.time_to_die = ft_atoi(av[2])) < 0 ||
-		(g_philo.time_to_eat = ft_atoi(av[3])) < 0 ||
-		(g_philo.time_to_sleep = ft_atoi(av[4])) < 0 ||
-		!(g_philo.forks_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * g_philo.philo_nb)) ||
+	if (!(g_philo.forks_mutex = malloc(sizeof(pthread_mutex_t)
+										* g_philo.philo_nb)) ||
 		(pthread_mutex_init(&g_philo.display_mutex, NULL)) ||
 		(pthread_mutex_init(&g_philo.finished_meal_mutex, NULL)))
-		return (EXIT_FAILURE);
+	{
+		write(1, S_ERR_MUTEX, ft_strlen(S_ERR_MUTEX));
+		return (MUTEX_ERROR);
+	}
 	while (i < g_philo.philo_nb)
 	{
 		if ((pthread_mutex_init(&g_philo.forks_mutex[i], NULL)))
-			return (EXIT_FAILURE);
+		{
+			write(1, S_ERR_MUTEX, ft_strlen(S_ERR_MUTEX));
+			return (MUTEX_ERROR);
+		}
 		i++;
 	}
 	g_philo.is_dead = false;
 	g_philo.nb_finished_threads = 0;
-	if (av[5])
-	{
-		g_philo.is_limited_meal = true;
-		if ((g_philo.meal_limit = ft_atoi(av[5])) < 0)
-			return (EXIT_FAILURE);
-	}
-	else
-		g_philo.is_limited_meal = false;
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
-int ft_init_threads()
+int		ft_init_threads(void)
 {
-	t_thread *philo_threads;
-	int i;
-	int err;
+	t_thread	*philo_threads;
+	int			i;
+	int			err;
 
 	i = 0;
 	if (!(philo_threads = malloc(sizeof(t_thread) * g_philo.philo_nb)))
@@ -57,15 +52,16 @@ int ft_init_threads()
 	{
 		philo_threads[i].philo_nbr = i;
 		philo_threads[i].meal_nb = 0;
-		if ((err = pthread_create(&(philo_threads[i].tid), NULL, philo_routine, &(philo_threads[i]))))
+		if ((err = pthread_create(&(philo_threads[i].tid), NULL,
+				philo_routine, &(philo_threads[i]))))
 		{
-			write(1, S_ERR_thread, ft_strlen(S_ERR_thread));
-			return (EXIT_FAILURE);
+			write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
+			return (THREAD_ERROR);
 		}
 		pthread_detach(philo_threads[i].tid);
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 int		ft_init_monitor(t_thread *philo)
@@ -74,9 +70,10 @@ int		ft_init_monitor(t_thread *philo)
 
 	err = 0;
 	pthread_mutex_init(&philo->monitor_mutex, NULL);
-	if ((err = pthread_create(&(philo->monitor_tid), NULL, monitor_routine, philo)))
+	if ((err = pthread_create(&(philo->monitor_tid), NULL,
+			monitor_routine, philo)))
 	{
-		write(1, S_ERR_thread, ft_strlen(S_ERR_thread));
+		write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
 		return (err);
 	}
 	pthread_detach(philo->monitor_tid);
