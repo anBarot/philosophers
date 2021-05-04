@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:08:27 by abarot            #+#    #+#             */
-/*   Updated: 2021/03/06 09:27:26 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/04 12:05:02 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*ft_itoa(int nbr)
 {
 	char *str;
 
-	if (!(str = ft_calloc(12)))
+	if (!(str = ft_calloc(ft_decimal_nbr(nbr) + 1)))
 		return (NULL);
 	if (nbr < 0)
 	{

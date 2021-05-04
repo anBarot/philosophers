@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/03/06 09:59:23 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/04 13:59:37 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int		ft_set_gphilo(void)
 	i = 0;
 	if (!(g_philo.forks_mutex = malloc(sizeof(pthread_mutex_t)
 										* g_philo.philo_nb)) ||
+		(pthread_mutex_init(&g_philo.taking_fork_mutex, NULL)) ||
 		(pthread_mutex_init(&g_philo.display_mutex, NULL)) ||
 		(pthread_mutex_init(&g_philo.finished_meal_mutex, NULL)))
 	{
@@ -41,24 +42,23 @@ int		ft_set_gphilo(void)
 
 int		ft_init_threads(void)
 {
-	t_thread	*philo_threads;
 	int			i;
 	int			err;
 
 	i = 0;
-	if (!(philo_threads = malloc(sizeof(t_thread) * g_philo.philo_nb)))
+	if (!(g_philo.philo_threads = malloc(sizeof(t_thread) * g_philo.philo_nb)))
 		return (EXIT_FAILURE);
 	while (i < g_philo.philo_nb)
 	{
-		philo_threads[i].philo_nbr = i;
-		philo_threads[i].meal_nb = 0;
-		if ((err = pthread_create(&(philo_threads[i].tid), NULL,
-				philo_routine, &(philo_threads[i]))))
+		g_philo.philo_threads[i].philo_nbr = i;
+		g_philo.philo_threads[i].meal_nb = 0;
+		if ((err = pthread_create(&(g_philo.philo_threads[i].tid), NULL,
+				philo_routine, &(g_philo.philo_threads[i]))))
 		{
 			write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
 			return (THREAD_ERROR);
 		}
-		pthread_detach(philo_threads[i].tid);
+		pthread_detach(g_philo.philo_threads[i].tid);
 		i++;
 	}
 	return (SUCCESS);

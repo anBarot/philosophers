@@ -6,11 +6,17 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/03/06 10:00:44 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/04 11:56:03 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
+
+void	clear_philo(void)
+{
+	free(g_philo.forks_mutex);
+	free(g_philo.philo_threads);
+}
 
 int		ft_get_arguments(char **av)
 {
@@ -42,5 +48,6 @@ int		main(int ac, char **av)
 	while (g_philo.is_dead == false &&
 			g_philo.nb_finished_threads != g_philo.philo_nb)
 		usleep(1);
+	clear_philo();
 	return (0);
 }

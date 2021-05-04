@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/03/06 10:13:24 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/04 13:54:50 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,6 @@ enum				e_enum
 	MEAL_NB_REACHED,
 };
 
-typedef struct		s_philo
-{
-	int				philo_nb;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				meal_limit;
-	int				nb_finished_threads;
-	bool			is_limited_meal;
-	bool			is_dead;
-	pthread_mutex_t	display_mutex;
-	pthread_mutex_t	*forks_mutex;
-	pthread_mutex_t	finished_meal_mutex;
-}					t_philo;
-
 typedef struct		s_thread
 {
 	pthread_t		tid;
@@ -65,11 +50,29 @@ typedef struct		s_thread
 	pthread_mutex_t	monitor_mutex;
 }					t_thread;
 
+typedef struct		s_philo
+{
+	int				philo_nb;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				meal_limit;
+	int				nb_finished_threads;
+	bool			is_limited_meal;
+	bool			is_dead;
+	t_thread		*philo_threads;
+	pthread_mutex_t	display_mutex;
+	pthread_mutex_t	taking_fork_mutex;
+	pthread_mutex_t	*forks_mutex;
+	pthread_mutex_t	finished_meal_mutex;
+}					t_philo;
+
 t_philo g_philo;
 struct timeval g_startime;
 
 void				ft_looptoa(int nbr, char *res, char *base);
 int					ft_atoi(char *str);
+int					ft_decimal_nbr(int nbr);
 char				*ft_itoa(int nbr);
 int					ft_strlen(char *str);
 void				*ft_calloc(int size);
