@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/04 11:56:03 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/04 17:57:32 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ int		ft_get_arguments(char **av)
 		write(1, S_ERR_ARG, ft_strlen(S_ERR_ARG));
 		return (ARG_ERROR);
 	}
+	if ((g_philo.time_to_think = (g_philo.time_to_die -
+			g_philo.time_to_eat - g_philo.time_to_sleep) / 2) < 0)
+		g_philo.time_to_think = 1;
 	if (av[5])
 	{
 		if ((g_philo.meal_limit = ft_atoi(av[5])) < 0)
@@ -41,7 +44,6 @@ int		ft_get_arguments(char **av)
 
 int		main(int ac, char **av)
 {
-	gettimeofday(&g_startime, NULL);
 	if ((ac != 6 && ac != 5) || ft_get_arguments(av) ||
 		ft_set_gphilo() != SUCCESS || ft_init_threads() != SUCCESS)
 		return (EXIT_FAILURE);

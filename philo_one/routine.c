@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/04 13:57:06 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/04 17:59:24 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	ft_eating_routine(t_thread *philo)
 	pthread_mutex_lock(&(g_philo.forks_mutex[philo->philo_nbr]));
 	ft_display_action(philo->philo_nbr, S_FORK);
 	pthread_mutex_unlock(&(g_philo.taking_fork_mutex));
-	ft_display_action(philo->philo_nbr, S_EAT);
 	philo->last_time_eat = ft_get_timelaps();
+	ft_display_action(philo->philo_nbr, S_EAT);
 	usleep(g_philo.time_to_eat * 1000);
 	philo->meal_nb = philo->meal_nb + 1;
 	pthread_mutex_unlock(&(g_philo.forks_mutex[philo->philo_nbr]));
@@ -53,9 +53,11 @@ void	ft_eating_routine(t_thread *philo)
 
 void	*philo_routine(void *arg)
 {
-	t_thread *philo;
+	t_thread	*philo;
 
 	philo = (t_thread *)arg;
+	if (philo->philo_nbr % 2)
+		usleep(10000);
 	if (ft_init_monitor(philo))
 		return ((void *)THREAD_ERROR);
 	while (1)
@@ -73,6 +75,7 @@ void	*philo_routine(void *arg)
 		ft_display_action(philo->philo_nbr, S_SLEEP);
 		usleep(g_philo.time_to_sleep * 1000);
 		ft_display_action(philo->philo_nbr, S_THINK);
+		usleep(g_philo.time_to_think * 1000);
 	}
 	return (NULL);
 }

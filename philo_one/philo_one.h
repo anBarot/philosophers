@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/04 13:54:50 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/04 15:33:35 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,12 @@ typedef struct		s_philo
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
+	int				time_to_think;
 	int				meal_limit;
 	int				nb_finished_threads;
 	bool			is_limited_meal;
 	bool			is_dead;
+	int				nb_eaten;
 	t_thread		*philo_threads;
 	pthread_mutex_t	display_mutex;
 	pthread_mutex_t	taking_fork_mutex;
@@ -84,5 +86,6 @@ int					ft_set_gphilo(void);
 void				*philo_routine();
 int					ft_init_monitor(t_thread *philo);
 void				*monitor_routine(void *arg);
+void				usleep_modif(long long time);
 
 #endif
