@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/03/06 10:44:52 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/06 18:30:48 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@
 # define S_THINK		"is thinking\n"
 # define S_DIE			"died\n"
 # define S_REACHED		"has eaten his last meal\n"
-# define S_ERR_SEM		"\nError : can't create semaphore\n"
-# define S_ERR_THREAD	"\nError : can't create thread\n"
-# define S_ERR_ARG		"\nError : wrong arguments\n"
+# define S_ERR_SEM		"Error : can't create semaphore\n"
+# define S_ERR_THREAD	"Error : can't create thread\n"
+# define S_ERR_ARG		"Error : wrong arguments\n"
 
 enum				e_enum
 {
@@ -39,22 +39,6 @@ enum				e_enum
 	SEM_ERROR,
 	THREAD_ERROR,
 };
-
-typedef struct		s_philo
-{
-	int				philo_nb;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				meal_limit;
-	int				nb_finished_threads;
-	bool			is_limited_meal;
-	bool			is_dead;
-	sem_t			*display_sem;
-	sem_t			*takef_sem;
-	sem_t			*forks_sem;
-	sem_t			*finished_meal_sem;
-}					t_philo;
 
 typedef struct		s_thread
 {
@@ -65,7 +49,24 @@ typedef struct		s_thread
 	pthread_t		monitor_tid;
 }					t_thread;
 
-t_philo g_philo;
+typedef struct		s_philo
+{
+	int				philo_nb;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				meal_lim;
+	int				nb_finished_threads;
+	bool			is_limited_meal;
+	bool			is_dead;
+	t_thread		*philo_threads;
+	sem_t			*display_sem;
+	sem_t			*takef_sem;
+	sem_t			*forks_sem;
+	sem_t			*finished_meal_sem;
+}					t_philo;
+
+t_philo g_phi;
 struct timeval g_startime;
 
 void				ft_looptoa(int nbr, char *res, char *base);

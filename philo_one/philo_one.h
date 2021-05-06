@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/04 15:33:35 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/06 12:30:21 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@
 # define S_THINK		"is thinking\n"
 # define S_DIE			"died\n"
 # define S_REACHED		"has eaten his last meal\n"
-# define S_ERR_MUTEX	"\nError : can't create mutex\n"
-# define S_ERR_THREAD	"\nError : can't create thread\n"
-# define S_ERR_ARG		"\nError : wrong arguments\n"
+# define S_ERR_MUTEX	"Error : can't create mutex\n"
+# define S_ERR_THREAD	"Error : can't create thread\n"
+# define S_ERR_ARG		"Error : wrong arguments\n"
 
 enum				e_enum
 {
@@ -57,7 +57,7 @@ typedef struct		s_philo
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				time_to_think;
-	int				meal_limit;
+	int				meal_lim;
 	int				nb_finished_threads;
 	bool			is_limited_meal;
 	bool			is_dead;
@@ -69,7 +69,7 @@ typedef struct		s_philo
 	pthread_mutex_t	finished_meal_mutex;
 }					t_philo;
 
-t_philo g_philo;
+t_philo g_phi;
 struct timeval g_startime;
 
 void				ft_looptoa(int nbr, char *res, char *base);

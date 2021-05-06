@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/03/06 10:44:05 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/06 18:30:01 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,43 +17,42 @@ int		ft_set_gphilo(void)
 	int i;
 
 	i = 0;
-	if (!(g_philo.forks_sem =
-		sem_open("forks_sem", O_CREAT | O_EXCL, S_IRWXU, g_philo.philo_nb)) ||
-		!(g_philo.takef_sem =
+	if (!(g_phi.forks_sem =
+		sem_open("forks_sem", O_CREAT | O_EXCL, S_IRWXU, g_phi.philo_nb)) ||
+		!(g_phi.takef_sem =
 		sem_open("takef_sem", O_CREAT | O_EXCL, S_IRWXU, 1)) ||
-		!(g_philo.display_sem =
+		!(g_phi.display_sem =
 		sem_open("display_sem", O_CREAT | O_EXCL, S_IRWXU, 1)) ||
-		!(g_philo.finished_meal_sem =
+		!(g_phi.finished_meal_sem =
 		sem_open("finished_meal_sem", O_CREAT | O_EXCL, S_IRWXU, 1)))
 	{
 		write(1, S_ERR_SEM, ft_strlen(S_ERR_SEM));
 		return (SEM_ERROR);
 	}
-	g_philo.is_dead = false;
-	g_philo.nb_finished_threads = 0;
+	g_phi.is_dead = false;
+	g_phi.nb_finished_threads = 0;
 	return (SUCCESS);
 }
 
 int		ft_init_threads(void)
 {
-	t_thread	*philo_threads;
 	int			i;
 	int			err;
 
 	i = 0;
-	if (!(philo_threads = malloc(sizeof(t_thread) * g_philo.philo_nb)))
+	if (!(g_phi.philo_threads = malloc(sizeof(t_thread) * g_phi.philo_nb)))
 		return (EXIT_FAILURE);
-	while (i < g_philo.philo_nb)
+	while (i < g_phi.philo_nb)
 	{
-		philo_threads[i].philo_nbr = i;
-		philo_threads[i].meal_nb = 0;
-		if ((err = pthread_create(&(philo_threads[i].tid), NULL,
-					philo_routine, &(philo_threads[i]))))
+		g_phi.philo_threads[i].philo_nbr = i;
+		g_phi.philo_threads[i].meal_nb = 0;
+		if ((err = pthread_create(&(g_phi.philo_threads[i].tid), NULL,
+					philo_routine, &(g_phi.philo_threads[i]))))
 		{
 			write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
 			return (THREAD_ERROR);
 		}
-		pthread_detach(philo_threads[i].tid);
+		pthread_detach(g_phi.philo_threads[i].tid);
 		i++;
 	}
 	return (SUCCESS);

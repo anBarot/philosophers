@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/04 12:45:03 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/06 18:35:41 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@ void	*monitor_routine(void *arg)
 
 	philo = (t_thread *)arg;
 	philo->last_time_eat = ft_get_timelaps();
-	while (g_philo.is_dead == false)
+	while (g_phi.is_dead == false)
 	{
-		if (g_philo.is_limited_meal == true &&
-			philo->meal_nb == g_philo.meal_limit)
+		if (g_phi.is_limited_meal == true &&
+			philo->meal_nb == g_phi.meal_lim)
 			return (NULL);
-		if ((ft_get_timelaps() - philo->last_time_eat) > g_philo.time_to_die)
+		if ((ft_get_timelaps() - philo->last_time_eat) >= g_phi.time_to_die)
 		{
 			ft_display_action(philo->philo_nbr, S_DIE);
-			sem_wait(g_philo.display_sem);
-			g_philo.is_dead = true;
+			sem_wait(g_phi.display_sem);
+			g_phi.is_dead = true;
 		}
 	}
 	return (NULL);
@@ -35,18 +35,18 @@ void	*monitor_routine(void *arg)
 
 void	ft_eating_routine(t_thread *philo)
 {
-	sem_wait(g_philo.takef_sem);
-	sem_wait(g_philo.forks_sem);
+	sem_wait(g_phi.takef_sem);
+	sem_wait(g_phi.forks_sem);
 	ft_display_action(philo->philo_nbr, S_FORK);
-	sem_wait(g_philo.forks_sem);
+	sem_wait(g_phi.forks_sem);
 	ft_display_action(philo->philo_nbr, S_FORK);
+	sem_post(g_phi.takef_sem);
 	ft_display_action(philo->philo_nbr, S_EAT);
-	sem_post(g_philo.takef_sem);
 	philo->last_time_eat = ft_get_timelaps();
-	usleep(g_philo.time_to_eat * 1000);
+	usleep(g_phi.time_to_eat * 1000);
 	philo->meal_nb = philo->meal_nb + 1;
-	sem_post(g_philo.forks_sem);
-	sem_post(g_philo.forks_sem);
+	sem_post(g_phi.forks_sem);
+	sem_post(g_phi.forks_sem);
 }
 
 void	*philo_routine(void *arg)
@@ -56,20 +56,21 @@ void	*philo_routine(void *arg)
 	philo = (t_thread *)arg;
 	if (ft_init_monitor(philo))
 		return ((void *)THREAD_ERROR);
-	while (1)
+	while (g_phi.is_dead == false && !(g_phi.is_limited_meal == true &&
+			philo->meal_nb == g_phi.meal_lim))
 	{
 		ft_eating_routine(philo);
-		if (g_philo.is_limited_meal == true &&
-				philo->meal_nb == g_philo.meal_limit)
+		if (g_phi.is_limited_meal == true &&
+				philo->meal_nb == g_phi.meal_lim)
 		{
 			ft_display_action(philo->philo_nbr, S_REACHED);
-			sem_wait(g_philo.finished_meal_sem);
-			g_philo.nb_finished_threads = g_philo.nb_finished_threads + 1;
-			sem_post(g_philo.finished_meal_sem);
+			sem_wait(g_phi.finished_meal_sem);
+			g_phi.nb_finished_threads = g_phi.nb_finished_threads + 1;
+			sem_post(g_phi.finished_meal_sem);
 			return (NULL);
 		}
 		ft_display_action(philo->philo_nbr, S_SLEEP);
-		usleep(g_philo.time_to_sleep * 1000);
+		usleep(g_phi.time_to_sleep * 1000);
 		ft_display_action(philo->philo_nbr, S_THINK);
 	}
 	return (NULL);

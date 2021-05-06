@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/03/06 11:00:04 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/06 19:40:46 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@
 # define S_THINK		"is thinking\n"
 # define S_DIE			"died\n"
 # define S_REACHED		"has eaten his last meal\n"
-# define S_ERR_SEM		"\nError : can't create semaphore\n"
-# define S_ERR_THREAD	"\nError : can't create thread\n"
-# define S_ERR_ARG		"\nError : wrong arguments\n"
+# define S_ERR_SEM		"Error : can't create semaphore\n"
+# define S_ERR_THREAD	"Error : can't create thread\n"
+# define S_ERR_ARG		"Error : wrong arguments\n"
 
 enum				e_enum
 {
@@ -47,16 +47,18 @@ enum				e_enum
 typedef struct		s_philo
 {
 	pid_t			*pid;
+	pthread_t		eating_monitor;
 	int				philo_nb;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				meal_limit;
+	int				meal_lim;
 	bool			is_limited_meal;
 	bool			is_dead;
 	sem_t			*display_sem;
 	sem_t			*takef_sem;
 	sem_t			*forks_sem;
+	sem_t			*end_program_sem;
 	sem_t			*finished_meal_sem;
 }					t_philo;
 
@@ -69,7 +71,7 @@ typedef struct		s_proc
 	pthread_t		monitor_tid;
 }					t_proc;
 
-t_philo g_philo;
+t_philo g_phi;
 struct timeval g_startime;
 
 void				ft_looptoa(int nbr, char *res, char *base);
@@ -82,8 +84,9 @@ int					ft_get_timelaps();
 int					ft_init_proc();
 void				ft_set_philothreads(t_proc *philo_threads);
 int					ft_set_gphilo(void);
-void				*ft_philo_routine();
+void				ft_philo_routine(t_proc *philo);
 int					ft_init_monitor(t_proc *philo);
 void				*ft_monitor_routine(void *arg);
+void				clear_philo(void);
 
 #endif

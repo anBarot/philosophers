@@ -6,7 +6,7 @@
 #    By: abarot <abarot@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/20 17:58:02 by abarot            #+#    #+#              #
-#    Updated: 2021/02/17 12:38:19 by abarot           ###   ########.fr        #
+#    Updated: 2021/05/06 18:44:19 by abarot           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ OBJS	=	$(SRCS:.c=.o)
 
 CC		=	clang
 
-CFLAGS	+=	-Wall -Wextra -Werror 
+CFLAGS	+=	-Wall -Wextra -Werror -g
 
 all		:	
 			make $(NAME)
