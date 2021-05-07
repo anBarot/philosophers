@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/07 15:11:00 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/07 15:40:35 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,22 @@ int		ft_set_gphilo(void)
 	return (EXIT_SUCCESS);
 }
 
+int		ft_init_eating_monitor(void)
+{
+	int		err;
+
+	if ((err = pthread_create(&(g_phi.eating_monitor), NULL,
+				eating_monitor, &g_phi.philo_nb)))
+	{
+		write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
+		return (err);
+	}
+	pthread_detach(g_phi.eating_monitor);
+}
+
 int		ft_init_proc(void)
 {
 	int		i;
-	int		err;
 
 	i = 0;
 	sem_wait(g_phi.end_program_sem);
@@ -68,15 +80,7 @@ int		ft_init_proc(void)
 		i++;
 	}
 	if (g_phi.is_limited_meal == true)
-	{
-		if ((err = pthread_create(&(g_phi.eating_monitor), NULL,
-					eating_monitor, &g_phi.philo_nb)))
-		{
-			write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
-			return (err);
-		}
-		pthread_detach(g_phi.eating_monitor);
-	}
+		ft_init_eating_monitor();
 	return (EXIT_SUCCESS);
 }
 
