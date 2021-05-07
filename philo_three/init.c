@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 20:28:24 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/07 15:11:00 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int		ft_set_gphilo(void)
 		sem_open("finished_meal_sem", O_CREAT | O_EXCL, S_IRWXU, 1)) ||
 		!(g_phi.pid = malloc(sizeof(pid_t) * g_phi.philo_nb))))
 		return (EXIT_FAILURE);
-	g_phi.is_dead = false;
 	return (EXIT_SUCCESS);
 }
 
@@ -61,6 +60,7 @@ int		ft_init_proc(void)
 	{
 		g_phi.philo_proc[i].philo_nbr = i;
 		g_phi.philo_proc[i].meal_nb = 0;
+		g_phi.philo_proc[i].is_dead = false;
 		if ((g_phi.pid[i] = fork()) == -1)
 			return (EXIT_FAILURE);
 		else if (!g_phi.pid[i])

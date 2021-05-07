@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 20:32:10 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/07 15:17:09 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ void	*ft_monitor_routine(void *arg)
 
 	philo = (t_proc *)arg;
 	philo->last_time_eat = ft_get_timelaps();
-	while (g_phi.is_dead == false && !(g_phi.is_limited_meal == true &&
+	while (philo->is_dead == false && !(g_phi.is_limited_meal == true &&
 	 philo->meal_nb == g_phi.meal_lim))
 	{
 		if ((ft_get_timelaps() - philo->last_time_eat) >= g_phi.time_to_die)
 		{
 			ft_display_action(philo->philo_nbr, S_DIE);
 			sem_wait(g_phi.display_sem);
-			g_phi.is_dead = true;
-			return (NULL);
+			philo->is_dead = true;
+			sem_post(g_phi.end_program_sem);
 		}
 	}
 	return (NULL);
@@ -52,11 +52,11 @@ void	ft_philo_routine(t_proc *philo)
 {
 	if (ft_init_monitor(philo))
 		exit(PROC_ERROR);
-	while (g_phi.is_dead == false)
+	while (philo->is_dead == false)
 	{
 		ft_eating_routine(philo);
 		if (g_phi.is_limited_meal == true && philo->meal_nb == g_phi.meal_lim
-			&& g_phi.is_dead == false)
+			&& philo->is_dead == false)
 		{
 			ft_display_action(philo->philo_nbr, S_REACHED);
 			g_phi.time_to_die = __INT_MAX__;
@@ -68,6 +68,5 @@ void	ft_philo_routine(t_proc *philo)
 		usleep(g_phi.time_to_sleep * 1000);
 		ft_display_action(philo->philo_nbr, S_THINK);
 	}
-	sem_post(g_phi.end_program_sem);
 	while (1);
 }

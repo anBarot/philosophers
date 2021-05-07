@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 20:19:14 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/07 14:41:42 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ enum				e_enum
 typedef struct		s_proc
 {
 	int				status;
+	bool			is_dead;
 	int				philo_nbr;
 	int				meal_nb;
 	int				last_time_eat;
@@ -64,7 +65,6 @@ typedef struct		s_philo
 	int				time_to_sleep;
 	int				meal_lim;
 	bool			is_limited_meal;
-	bool			is_dead;
 	sem_t			*display_sem;
 	sem_t			*takef_sem;
 	sem_t			*forks_sem;
