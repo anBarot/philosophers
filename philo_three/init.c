@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 19:52:47 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/06 20:28:24 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 void	*eating_monitor(void *count)
 {
-	int *counter;
+	int	counter;
 
-	counter = (int *)count;
-	while (*counter)
+	counter = *(int *)(count);
+	counter++;
+	while (counter)
 	{
 		sem_wait(g_phi.finished_meal_sem);
-		*counter = *counter - 1;
+		counter--;
 	}
 	sem_post(g_phi.end_program_sem);
 	return (NULL);
@@ -49,26 +50,21 @@ int		ft_set_gphilo(void)
 
 int		ft_init_proc(void)
 {
-	t_proc	*philo_proc;
 	int		i;
 	int		err;
 
 	i = 0;
 	sem_wait(g_phi.end_program_sem);
-	if (!(philo_proc = malloc(sizeof(t_proc) * g_phi.philo_nb)))
+	if (!(g_phi.philo_proc = malloc(sizeof(t_proc) * g_phi.philo_nb)))
 		return (EXIT_FAILURE);
 	while (i < g_phi.philo_nb)
 	{
-		philo_proc[i].philo_nbr = i;
-		philo_proc[i].meal_nb = 0;
+		g_phi.philo_proc[i].philo_nbr = i;
+		g_phi.philo_proc[i].meal_nb = 0;
 		if ((g_phi.pid[i] = fork()) == -1)
 			return (EXIT_FAILURE);
 		else if (!g_phi.pid[i])
-		{
-			ft_philo_routine(&(philo_proc[i]));
-			sem_post(g_phi.finished_meal_sem);
-			while(1);
-		}
+			ft_philo_routine(&(g_phi.philo_proc[i]));
 		i++;
 	}
 	if (g_phi.is_limited_meal == true)

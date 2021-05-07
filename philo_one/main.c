@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 18:22:39 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/07 13:32:33 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,18 @@ int		is_arg_digit(char **av)
 
 void	clear_philo(void)
 {
+	int	i;
+
+	pthread_mutex_destroy(&g_phi.finished_meal_mutex);
+	pthread_mutex_unlock(&g_phi.display_mutex);
+	pthread_mutex_destroy(&g_phi.display_mutex);
+	pthread_mutex_destroy(&g_phi.taking_fork_mutex);
+	i = 0;
+	while (i < g_phi.philo_nb)
+	{
+		pthread_mutex_destroy(&g_phi.forks_mutex[i]);
+		i++;
+	}
 	free(g_phi.forks_mutex);
 	free(g_phi.philo_threads);
 }
@@ -77,9 +89,6 @@ int		main(int ac, char **av)
 		pthread_join(g_phi.philo_threads[i].tid, NULL);
 		i++;
 	}
-	while (g_phi.is_dead == false &&
-			g_phi.nb_finished_threads != g_phi.philo_nb)
-		usleep(1);
 	clear_philo();
 	return (0);
 }

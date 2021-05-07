@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 18:05:53 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/07 13:44:50 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int		ft_init_threads(void)
 			write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
 			return (THREAD_ERROR);
 		}
-		pthread_detach(g_phi.philo_threads[i].tid);
 		i++;
 	}
 	return (SUCCESS);
@@ -71,7 +70,6 @@ int		ft_init_monitor(t_thread *philo)
 	int err;
 
 	err = 0;
-	pthread_mutex_init(&philo->monitor_mutex, NULL);
 	if ((err = pthread_create(&(philo->monitor_tid), NULL,
 			monitor_routine, philo)))
 	{

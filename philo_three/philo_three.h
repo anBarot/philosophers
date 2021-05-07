@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 19:40:46 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/06 20:19:14 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,18 @@ enum				e_enum
 	THREAD_ERROR,
 };
 
+typedef struct		s_proc
+{
+	int				status;
+	int				philo_nbr;
+	int				meal_nb;
+	int				last_time_eat;
+	pthread_t		monitor_tid;
+}					t_proc;
+
 typedef struct		s_philo
 {
+	t_proc			*philo_proc;
 	pid_t			*pid;
 	pthread_t		eating_monitor;
 	int				philo_nb;
@@ -61,15 +71,6 @@ typedef struct		s_philo
 	sem_t			*end_program_sem;
 	sem_t			*finished_meal_sem;
 }					t_philo;
-
-typedef struct		s_proc
-{
-	int				status;
-	int				philo_nbr;
-	int				meal_nb;
-	int				last_time_eat;
-	pthread_t		monitor_tid;
-}					t_proc;
 
 t_philo g_phi;
 struct timeval g_startime;

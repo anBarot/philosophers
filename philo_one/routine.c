@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 12:30:30 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/07 13:48:30 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,9 @@ void	*monitor_routine(void *arg)
 
 	philo = (t_thread *)arg;
 	philo->last_time_eat = ft_get_timelaps();
-	while (g_phi.is_dead == false)
+	while (g_phi.is_dead == false && !(g_phi.is_limited_meal == true 
+			&& philo->meal_nb == g_phi.meal_lim))
 	{
-		if (g_phi.is_limited_meal == true &&
-			philo->meal_nb == g_phi.meal_lim)
-			return (NULL);
 		if ((ft_get_timelaps() - philo->last_time_eat) >= g_phi.time_to_die)
 		{
 			ft_display_action(philo->philo_nbr, S_DIE);
@@ -30,6 +28,7 @@ void	*monitor_routine(void *arg)
 			g_phi.is_dead = true;
 		}
 	}
+	philo->monitor_tid = 0;
 	return (NULL);
 }
 
@@ -60,8 +59,7 @@ void	*philo_routine(void *arg)
 		usleep(10000);
 	if (ft_init_monitor(philo))
 		return ((void *)THREAD_ERROR);
-	while (g_phi.is_dead == false && !(g_phi.is_limited_meal == true &&
-			philo->meal_nb == g_phi.meal_lim))
+	while (g_phi.is_dead == false)
 	{
 		ft_eating_routine(philo);
 		if (g_phi.is_limited_meal == true && philo->meal_nb == g_phi.meal_lim)
@@ -70,6 +68,8 @@ void	*philo_routine(void *arg)
 			pthread_mutex_lock(&g_phi.finished_meal_mutex);
 			g_phi.nb_finished_threads = g_phi.nb_finished_threads + 1;
 			pthread_mutex_unlock(&g_phi.finished_meal_mutex);
+			while (philo->monitor_tid)
+				usleep(1);
 			return (NULL);
 		}
 		ft_display_action(philo->philo_nbr, S_SLEEP);
@@ -77,5 +77,7 @@ void	*philo_routine(void *arg)
 		ft_display_action(philo->philo_nbr, S_THINK);
 		usleep(g_phi.time_to_think * 1000);
 	}
+	while (philo->monitor_tid)
+		usleep(1);
 	return (NULL);
 }

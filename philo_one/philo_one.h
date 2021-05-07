@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 12:30:21 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/07 12:23:07 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct		s_thread
 	int				meal_nb;
 	int				last_time_eat;
 	pthread_t		monitor_tid;
-	pthread_mutex_t	monitor_mutex;
 }					t_thread;
 
 typedef struct		s_philo

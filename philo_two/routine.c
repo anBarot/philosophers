@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 18:35:41 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/07 12:49:06 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,13 @@ void	*philo_routine(void *arg)
 			sem_wait(g_phi.finished_meal_sem);
 			g_phi.nb_finished_threads = g_phi.nb_finished_threads + 1;
 			sem_post(g_phi.finished_meal_sem);
+			// pthread_join(philo->monitor_tid, NULL);
 			return (NULL);
 		}
 		ft_display_action(philo->philo_nbr, S_SLEEP);
 		usleep(g_phi.time_to_sleep * 1000);
 		ft_display_action(philo->philo_nbr, S_THINK);
 	}
+	// pthread_join(philo->monitor_tid, NULL);
 	return (NULL);
 }

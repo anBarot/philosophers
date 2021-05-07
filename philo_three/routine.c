@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 19:55:10 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/06 20:32:10 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	*ft_monitor_routine(void *arg)
 
 	philo = (t_proc *)arg;
 	philo->last_time_eat = ft_get_timelaps();
-	while (g_phi.is_dead == false)
+	while (g_phi.is_dead == false && !(g_phi.is_limited_meal == true &&
+	 philo->meal_nb == g_phi.meal_lim))
 	{
 		if ((ft_get_timelaps() - philo->last_time_eat) >= g_phi.time_to_die)
 		{
@@ -59,6 +60,7 @@ void	ft_philo_routine(t_proc *philo)
 		{
 			ft_display_action(philo->philo_nbr, S_REACHED);
 			g_phi.time_to_die = __INT_MAX__;
+			free(g_phi.philo_proc);
 			sem_post(g_phi.finished_meal_sem);
 			while(1);
 		}

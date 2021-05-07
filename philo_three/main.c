@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 19:41:08 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/06 20:28:30 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	clear_philo(void)
 	sem_close(g_phi.forks_sem);
 	sem_close(g_phi.takef_sem);
 	sem_close(g_phi.end_program_sem);
+	free(g_phi.philo_proc);
 }
 
 int		is_arg_digit(char **av)
