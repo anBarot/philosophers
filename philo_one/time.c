@@ -39,14 +39,11 @@ void	itoa_philo(int	nb, int i)
 
 void	ft_display_action(int nb, char *action)
 {
-	if (g_phi.is_dead == false)
-	{
-		pthread_mutex_lock(&(g_phi.display_mutex));
-		itoa_philo(ft_get_timelaps(), 7);
-		itoa_philo(nb, 13);
-		ft_memcpy(&(g_phi.to_display[ft_strlen(S_STR_TEMPL)]), action,
-					ft_strlen(action));
-		write(STDOUT_FILENO, g_phi.to_display, ft_strlen(S_STR_TEMPL) + ft_strlen(action));
-		pthread_mutex_unlock(&(g_phi.display_mutex));
-	}
+	pthread_mutex_lock(&(g_phi.display_mutex));
+	itoa_philo(ft_get_timelaps(), 7);
+	itoa_philo(nb, 13);
+	ft_memcpy(&(g_phi.to_display[ft_strlen(S_STR_TEMPL)]), action,
+				ft_strlen(action));
+	write(STDOUT_FILENO, g_phi.to_display, ft_strlen(S_STR_TEMPL) + ft_strlen(action));
+	pthread_mutex_unlock(&(g_phi.display_mutex));
 }

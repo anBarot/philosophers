@@ -1,0 +1,23 @@
+00000211 <   4> has taken a fork
+00000211 <   4> has taken a fork
+00000211 <   4> is eating
+00000415 <   4> is sleeping
+00000616 <   4> is thinking
+00000617 <   4> has taken a fork
+00000617 <   4> has taken a fork
+00000617 <   4> is eating
+00000818 <   4> is sleeping
+00001018 <   4> is thinking
+00001018 <   4> has taken a fork
+00001018 <   4> has taken a fork
+00001018 <   4> is eating
+00001218 <   4> is sleeping
+00001418 <   4> is thinking
+00001418 <   4> has taken a fork
+00001418 <   4> has taken a fork
+00001418 <   4> is eating
+00001619 <   4> is sleeping
+00001860 <   4> is thinking
+00001860 <   4> has taken a fork
+00001860 <   4> has taken a fork
+00001860 <   4> is eating

@@ -25,14 +25,15 @@ void	*monitor_routine(void)
 			pthread_mutex_lock(&(g_phi.philo_threads[i].read_time_mutex));
 			if ((ft_get_timelaps() - g_phi.philo_threads[i].last_time_eat) >= g_phi.time_to_die)
 			{
-				ft_display_action(g_phi.philo_threads[i].philo_nbr + 1, S_DIE);
 				g_phi.is_dead = true;
+				ft_display_action(g_phi.philo_threads[i].philo_nbr + 1, S_DIE);
 				pthread_mutex_unlock(&(g_phi.philo_threads[i].read_time_mutex));
 			}
 			pthread_mutex_unlock(&(g_phi.philo_threads[i].read_time_mutex));
 			i++;
-			usleep(1000);
+			usleep(500);
 		}
+		usleep(500);
 	}
 	return (NULL);
 }
@@ -63,6 +64,8 @@ void	*philo_routine(void *arg)
 
 	philo = (t_thread *)arg;
 	philo->last_time_eat = ft_get_timelaps();
+	if (philo->philo_nbr % 2)
+		usleep(1000);
 	while (g_phi.is_dead == false)
 	{
 		ft_eating_routine(philo);
