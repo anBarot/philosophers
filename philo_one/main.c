@@ -47,6 +47,7 @@ void	clear_philo(void)
 		i++;
 	}
 	free(g_phi.forks_mutex);
+	free(g_phi.read_time_mutex);
 	free(g_phi.philo_threads);
 	free(g_phi.to_display);
 }

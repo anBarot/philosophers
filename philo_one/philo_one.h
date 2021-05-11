@@ -47,6 +47,7 @@ typedef struct		s_thread
 	int				philo_nbr;
 	int				meal_nb;
 	int				last_time_eat;
+	pthread_mutex_t	read_time_mutex;
 }					t_thread;
 
 typedef struct		s_philo
@@ -66,7 +67,7 @@ typedef struct		s_philo
 	t_thread		*philo_threads;
 	pthread_mutex_t	display_mutex;
 	pthread_mutex_t	taking_fork_mutex;
-	pthread_mutex_t	read_time_mutex;
+	pthread_mutex_t	*read_time_mutex;
 	pthread_mutex_t	*forks_mutex;
 	pthread_mutex_t	finished_meal_mutex;
 }					t_philo;

@@ -19,9 +19,10 @@ int		ft_set_gphilo(void)
 	i = 0;
 	if (!(g_phi.forks_mutex = malloc(sizeof(pthread_mutex_t)
 										* g_phi.philo_nb)) ||
+		!(g_phi.read_time_mutex = malloc(sizeof(pthread_mutex_t)
+										* g_phi.philo_nb)) ||
 		(pthread_mutex_init(&g_phi.taking_fork_mutex, NULL)) ||
 		(pthread_mutex_init(&g_phi.display_mutex, NULL)) ||
-		(pthread_mutex_init(&g_phi.read_time_mutex, NULL)) ||
 		(pthread_mutex_init(&g_phi.finished_meal_mutex, NULL)))
 	{
 		write(1, S_ERR_MUTEX, ft_strlen(S_ERR_MUTEX));
@@ -29,7 +30,8 @@ int		ft_set_gphilo(void)
 	}
 	while (i < g_phi.philo_nb)
 	{
-		if ((pthread_mutex_init(&g_phi.forks_mutex[i], NULL)))
+		if ((pthread_mutex_init(&g_phi.forks_mutex[i], NULL)) ||
+			pthread_mutex_init(&g_phi.read_time_mutex[i], NULL))
 		{
 			write(1, S_ERR_MUTEX, ft_strlen(S_ERR_MUTEX));
 			return (MUTEX_ERROR);
