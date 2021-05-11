@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 13:41:42 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 14:30:18 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct		s_philo
 	t_thread		*philo_threads;
 	pthread_mutex_t	display_mutex;
 	pthread_mutex_t	taking_fork_mutex;
+	pthread_mutex_t	read_time_mutex;
 	pthread_mutex_t	*forks_mutex;
 	pthread_mutex_t	finished_meal_mutex;
 }					t_philo;

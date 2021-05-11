@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 13:42:12 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 14:30:36 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int		ft_set_gphilo(void)
 										* g_phi.philo_nb)) ||
 		(pthread_mutex_init(&g_phi.taking_fork_mutex, NULL)) ||
 		(pthread_mutex_init(&g_phi.display_mutex, NULL)) ||
+		(pthread_mutex_init(&g_phi.read_time_mutex, NULL)) ||
 		(pthread_mutex_init(&g_phi.finished_meal_mutex, NULL)))
 	{
 		write(1, S_ERR_MUTEX, ft_strlen(S_ERR_MUTEX));
