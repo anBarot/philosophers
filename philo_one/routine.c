@@ -6,16 +6,17 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 13:04:17 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 13:26:26 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void	*monitor_routine(void)
+void	monitor_routine(void *_i)
 {
-	int		i;
+	int	i;
 
+	i = *((int *)_i);
 	while (g_phi.is_dead == false)
 	{
 		i = 0;
@@ -30,7 +31,6 @@ void	*monitor_routine(void)
 			i++;
 		}
 	}
-	return (NULL);
 }
 
 void	ft_eating_routine(t_thread *philo)
