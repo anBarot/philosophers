@@ -7,6 +7,13 @@ if [ $PROGRAM != "clean" ] ; then
 echo $ARG_PHILO
 fi
 
+if [ $PROGRAM = "call" ] ; then
+make -C philo_one
+valgrind --tool=callgrind ./philo_one/philo_one 4 410 200 200
+kcachegrind callgrind.out*
+rm callgrind.out*
+fi
+
 if [ $PROGRAM = "1" ] ; then
 make -C philo_one
 ./philo_one/philo_one $ARG_PHILO > debug.txt

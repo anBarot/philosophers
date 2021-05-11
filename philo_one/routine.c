@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 18:37:17 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 19:02:05 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,25 @@ void	*monitor_routine(void)
 			pthread_mutex_unlock(&(g_phi.read_time_mutex[i]));
 			i++;
 		}
-		usleep(1000);
 	}
 	return (NULL);
 }
 
-void	ft_eating_routine(t_thread *philo)
+void	ft_taking_forks(t_thread *philo)
 {
 	pthread_mutex_lock(&(g_phi.taking_fork_mutex));
 	pthread_mutex_lock(&(g_phi.forks_mutex[(philo->phi_nb + 1)
 							% g_phi.philo_nb]));
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_FORK) : 0;
 	pthread_mutex_lock(&(g_phi.forks_mutex[philo->phi_nb]));
-	pthread_mutex_lock(&(g_phi.read_time_mutex[philo->phi_nb]));
-	pthread_mutex_unlock(&(g_phi.taking_fork_mutex));
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_FORK) : 0;
+	pthread_mutex_unlock(&(g_phi.taking_fork_mutex));
+}
+
+void	ft_eating_routine(t_thread *philo)
+{
+	ft_taking_forks(philo);
+	pthread_mutex_lock(&(g_phi.read_time_mutex[philo->phi_nb]));
 	philo->last_time_eat = ft_get_timelaps();
 	pthread_mutex_unlock(&(g_phi.read_time_mutex[philo->phi_nb]));
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_EAT) : 0;
@@ -66,7 +70,7 @@ void	*philo_routine(void *arg)
 	philo = (t_thread *)arg;
 	philo->last_time_eat = ft_get_timelaps();
 	if (philo->phi_nb % 2)
-		usleep(1000);
+		usleep(500);
 	while (g_phi.dead == false)
 	{
 		ft_eating_routine(philo);
