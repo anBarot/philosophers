@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 13:42:28 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 14:11:07 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	*monitor_routine(void)
 				g_phi.is_dead = true;
 			}
 			i++;
+			usleep(1000);
 		}
 	}
 	return (NULL);
@@ -36,13 +37,13 @@ void	*monitor_routine(void)
 
 void	ft_eating_routine(t_thread *philo)
 {
-	// pthread_mutex_lock(&(g_phi.taking_fork_mutex));
+	pthread_mutex_lock(&(g_phi.taking_fork_mutex));
 	pthread_mutex_lock(&(g_phi.forks_mutex[(philo->philo_nbr + 1)
 							% g_phi.philo_nb]));
 	ft_display_action(philo->philo_nbr + 1, S_FORK);
 	pthread_mutex_lock(&(g_phi.forks_mutex[philo->philo_nbr]));
 	ft_display_action(philo->philo_nbr + 1, S_FORK);
-	// pthread_mutex_unlock(&(g_phi.taking_fork_mutex));
+	pthread_mutex_unlock(&(g_phi.taking_fork_mutex));
 	philo->last_time_eat = ft_get_timelaps();
 	ft_display_action(philo->philo_nbr + 1, S_EAT);
 	usleep(g_phi.time_to_eat * 1000);
