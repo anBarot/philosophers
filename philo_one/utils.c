@@ -6,11 +6,25 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:08:27 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/05 11:05:46 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/10 19:43:47 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
+
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	if (!dest || !src)
+		return (0);
+	while (n)
+	{
+		*(char *)dest = *(char *)src;
+		dest++;
+		src++;
+		n--;
+	}
+	return (dest);
+}
 
 void	*ft_calloc(int size)
 {
@@ -20,11 +34,7 @@ void	*ft_calloc(int size)
 		size = 1;
 	if (!(res = malloc(size)))
 		return (NULL);
-	while (size)
-	{
-		res[size - 1] = '\0';
-		size--;
-	}
+	res = memset(res, '\0', size);
 	return ((void *)res);
 }
 
@@ -61,27 +71,4 @@ int		ft_atoi(char *str)
 		str++;
 	}
 	return (nbr * sign);
-}
-
-void	ft_looptoa(int nbr, char *res, char *base)
-{
-	if (nbr >= ft_strlen(base))
-		ft_looptoa(nbr / ft_strlen(base), res, base);
-	res[ft_strlen(res)] = base[nbr % ft_strlen(base)];
-}
-
-char	*ft_itoa(int nbr)
-{
-	char *str;
-
-	if (!(str = ft_calloc(ft_decimal_nbr(nbr) + 1)))
-		return (NULL);
-	if (nbr < 0)
-	{
-		str[0] = '-';
-		ft_looptoa(nbr, str + 1, "0123456789");
-	}
-	else
-		ft_looptoa(nbr, str, "0123456789");
-	return (str);
 }

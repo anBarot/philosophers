@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/07 15:40:16 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 11:00:14 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*monitor_routine(void *arg)
 	{
 		if ((ft_get_timelaps() - philo->last_time_eat) >= g_phi.time_to_die)
 		{
-			ft_display_action(philo->philo_nbr, S_DIE);
+			ft_display_action(philo->philo_nbr + 1, S_DIE);
 			pthread_mutex_lock(&g_phi.display_mutex);
 			g_phi.is_dead = true;
 		}
@@ -37,12 +37,12 @@ void	ft_eating_routine(t_thread *philo)
 	pthread_mutex_lock(&(g_phi.taking_fork_mutex));
 	pthread_mutex_lock(&(g_phi.forks_mutex[(philo->philo_nbr + 1)
 							% g_phi.philo_nb]));
-	ft_display_action(philo->philo_nbr, S_FORK);
+	ft_display_action(philo->philo_nbr + 1, S_FORK);
 	pthread_mutex_lock(&(g_phi.forks_mutex[philo->philo_nbr]));
-	ft_display_action(philo->philo_nbr, S_FORK);
+	ft_display_action(philo->philo_nbr + 1, S_FORK);
 	pthread_mutex_unlock(&(g_phi.taking_fork_mutex));
 	philo->last_time_eat = ft_get_timelaps();
-	ft_display_action(philo->philo_nbr, S_EAT);
+	ft_display_action(philo->philo_nbr + 1, S_EAT);
 	usleep(g_phi.time_to_eat * 1000);
 	philo->meal_nb = philo->meal_nb + 1;
 	pthread_mutex_unlock(&(g_phi.forks_mutex[philo->philo_nbr]));
@@ -70,10 +70,9 @@ void	*philo_routine(void *arg)
 			pthread_mutex_unlock(&g_phi.finished_meal_mutex);
 			return (NULL);
 		}
-		ft_display_action(philo->philo_nbr, S_SLEEP);
+		ft_display_action(philo->philo_nbr + 1, S_SLEEP);
 		usleep(g_phi.time_to_sleep * 1000);
-		ft_display_action(philo->philo_nbr, S_THINK);
-		usleep(g_phi.time_to_think * 1000);
+		ft_display_action(philo->philo_nbr + 1, S_THINK);
 	}
 	return (NULL);
 }

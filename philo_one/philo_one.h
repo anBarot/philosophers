@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/07 12:23:07 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 10:38:19 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define S_ERR_MUTEX	"Error : can't create mutex\n"
 # define S_ERR_THREAD	"Error : can't create thread\n"
 # define S_ERR_ARG		"Error : wrong arguments\n"
+# define S_STR_TEMPL	"00000000 <    > "
 
 enum				e_enum
 {
@@ -61,6 +62,7 @@ typedef struct		s_philo
 	bool			is_limited_meal;
 	bool			is_dead;
 	int				nb_eaten;
+	char			*to_display;
 	t_thread		*philo_threads;
 	pthread_mutex_t	display_mutex;
 	pthread_mutex_t	taking_fork_mutex;
@@ -71,12 +73,12 @@ typedef struct		s_philo
 t_philo g_phi;
 struct timeval g_startime;
 
-void				ft_looptoa(int nbr, char *res, char *base);
+int					get_decimal_nbr(int nbr);
 int					ft_atoi(char *str);
-int					ft_decimal_nbr(int nbr);
 char				*ft_itoa(int nbr);
 int					ft_strlen(char *str);
 void				*ft_calloc(int size);
+void				*ft_memcpy(void *dest, const void *src, size_t n);
 void				ft_display_action(int nb, char *action);
 int					ft_get_timelaps();
 int					ft_init_threads();
