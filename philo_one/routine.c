@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 14:32:21 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 16:42:03 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	*monitor_routine(void)
 {
 	int	i;
 
-	i = 0;
 	while (g_phi.is_dead == false)
 	{
 		i = 0;
@@ -31,9 +30,9 @@ void	*monitor_routine(void)
 			}
 			pthread_mutex_unlock(&(g_phi.philo_threads[i].read_time_mutex));
 			i++;
-			usleep(500);
+			usleep(1000);
 		}
-		usleep(500);
+		usleep(1000);
 	}
 	return (NULL);
 }
@@ -52,10 +51,10 @@ void	ft_eating_routine(t_thread *philo)
 	pthread_mutex_unlock(&(philo->read_time_mutex));
 	(g_phi.is_dead == false) ? ft_display_action(philo->philo_nbr + 1, S_EAT) : 0;
 	usleep(g_phi.time_to_eat * 1000);
-	philo->meal_nb = philo->meal_nb + 1;
 	pthread_mutex_unlock(&(g_phi.forks_mutex[philo->philo_nbr]));
 	pthread_mutex_unlock(&(g_phi.forks_mutex[(philo->philo_nbr + 1)
 							% g_phi.philo_nb]));
+	philo->meal_nb = philo->meal_nb + 1;
 }
 
 void	*philo_routine(void *arg)
@@ -64,8 +63,6 @@ void	*philo_routine(void *arg)
 
 	philo = (t_thread *)arg;
 	philo->last_time_eat = ft_get_timelaps();
-	if (philo->philo_nbr % 2)
-		usleep(1000);
 	while (g_phi.is_dead == false)
 	{
 		ft_eating_routine(philo);
@@ -80,6 +77,7 @@ void	*philo_routine(void *arg)
 		(g_phi.is_dead == false) ? ft_display_action(philo->philo_nbr + 1, S_SLEEP) : 0;
 		usleep(g_phi.time_to_sleep * 1000);
 		(g_phi.is_dead == false) ? ft_display_action(philo->philo_nbr + 1, S_THINK) : 0;
+		usleep(g_phi.time_to_think * 1000);
 	}
 	return (NULL);
 }
