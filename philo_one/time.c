@@ -6,24 +6,11 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 16:47:16 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 11:01:44 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 12:07:33 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
-
-int		get_decimal_nbr(int nbr)
-{
-	int i;
-
-	i = 1;
-	while (nbr >= 10)
-	{
-		nbr = nbr / 10;
-		i++;
-	}
-	return (i);
-}
 
 int		ft_get_timelaps(void)
 {

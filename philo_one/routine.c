@@ -6,41 +6,42 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 11:00:14 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 13:04:17 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void	*monitor_routine(void *arg)
+void	*monitor_routine(void)
 {
-	t_thread *philo;
+	int		i;
 
-	philo = (t_thread *)arg;
-	philo->last_time_eat = ft_get_timelaps();
-	while (g_phi.is_dead == false && !(g_phi.is_limited_meal == true
-			&& philo->meal_nb == g_phi.meal_lim))
+	while (g_phi.is_dead == false)
 	{
-		if ((ft_get_timelaps() - philo->last_time_eat) >= g_phi.time_to_die)
+		i = 0;
+		while (i < g_phi.philo_nb)
 		{
-			ft_display_action(philo->philo_nbr + 1, S_DIE);
-			pthread_mutex_lock(&g_phi.display_mutex);
-			g_phi.is_dead = true;
+			if ((ft_get_timelaps() - g_phi.philo_threads[i].last_time_eat) >= g_phi.time_to_die)
+			{
+				ft_display_action(g_phi.philo_threads[i].philo_nbr + 1, S_DIE);
+				pthread_mutex_lock(&g_phi.display_mutex);
+				g_phi.is_dead = true;
+			}
+			i++;
 		}
 	}
-	philo->monitor_tid = 0;
 	return (NULL);
 }
 
 void	ft_eating_routine(t_thread *philo)
 {
-	pthread_mutex_lock(&(g_phi.taking_fork_mutex));
+	// pthread_mutex_lock(&(g_phi.taking_fork_mutex));
 	pthread_mutex_lock(&(g_phi.forks_mutex[(philo->philo_nbr + 1)
 							% g_phi.philo_nb]));
 	ft_display_action(philo->philo_nbr + 1, S_FORK);
 	pthread_mutex_lock(&(g_phi.forks_mutex[philo->philo_nbr]));
 	ft_display_action(philo->philo_nbr + 1, S_FORK);
-	pthread_mutex_unlock(&(g_phi.taking_fork_mutex));
+	// pthread_mutex_unlock(&(g_phi.taking_fork_mutex));
 	philo->last_time_eat = ft_get_timelaps();
 	ft_display_action(philo->philo_nbr + 1, S_EAT);
 	usleep(g_phi.time_to_eat * 1000);
@@ -57,8 +58,7 @@ void	*philo_routine(void *arg)
 	philo = (t_thread *)arg;
 	if (philo->philo_nbr % 2)
 		usleep(10000);
-	if (ft_init_monitor(philo))
-		return ((void *)THREAD_ERROR);
+	philo->last_time_eat = ft_get_timelaps();
 	while (g_phi.is_dead == false)
 	{
 		ft_eating_routine(philo);

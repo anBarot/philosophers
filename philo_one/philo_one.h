@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 10:38:19 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 13:04:34 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct		s_thread
 	int				philo_nbr;
 	int				meal_nb;
 	int				last_time_eat;
-	pthread_t		monitor_tid;
 }					t_thread;
 
 typedef struct		s_philo
@@ -63,6 +62,7 @@ typedef struct		s_philo
 	bool			is_dead;
 	int				nb_eaten;
 	char			*to_display;
+	pthread_t		monitor_tid;
 	t_thread		*philo_threads;
 	pthread_mutex_t	display_mutex;
 	pthread_mutex_t	taking_fork_mutex;
@@ -73,20 +73,17 @@ typedef struct		s_philo
 t_philo g_phi;
 struct timeval g_startime;
 
-int					get_decimal_nbr(int nbr);
 int					ft_atoi(char *str);
-char				*ft_itoa(int nbr);
 int					ft_strlen(char *str);
 void				*ft_calloc(int size);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
 void				ft_display_action(int nb, char *action);
 int					ft_get_timelaps();
 int					ft_init_threads();
-void				ft_set_philothreads(t_thread *philo_threads);
 int					ft_set_gphilo(void);
+void				ft_set_philothreads(t_thread *philo_threads);
 void				*philo_routine();
-int					ft_init_monitor(t_thread *philo);
-void				*monitor_routine(void *arg);
-void				usleep_modif(long long time);
+int					ft_init_monitor(void);
+void				*monitor_routine(void);
 
 #endif

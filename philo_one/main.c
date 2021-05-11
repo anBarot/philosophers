@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 10:57:54 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 12:32:51 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		ft_get_arguments(int ac, char **av)
 {
 	if ((ac != 6 && ac != 5) ||
 		!is_arg_digit(av + 1) ||
-		(g_phi.philo_nb = ft_atoi(av[1])) < 2 ||
+		(g_phi.philo_nb = ft_atoi(av[1])) < 2 || g_phi.philo_nb > 9999 ||
 		(g_phi.time_to_die = ft_atoi(av[2])) < 0 ||
 		(g_phi.time_to_eat = ft_atoi(av[3])) < 0 ||
 		(g_phi.time_to_sleep = ft_atoi(av[4])) < 0)

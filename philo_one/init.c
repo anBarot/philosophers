@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/10 19:50:12 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 13:03:55 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,21 @@ int		ft_init_threads(void)
 		}
 		i++;
 	}
+	ft_init_monitor();
 	return (SUCCESS);
 }
 
-int		ft_init_monitor(t_thread *philo)
+int		ft_init_monitor(void)
 {
 	int err;
 
 	err = 0;
-	if ((err = pthread_create(&(philo->monitor_tid), NULL,
-			monitor_routine, philo)))
+	if ((err = pthread_create(&(g_phi.monitor_tid), NULL,
+			monitor_routine, NULL)))
 	{
 		write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
 		return (err);
 	}
-	pthread_detach(philo->monitor_tid);
+	pthread_detach(g_phi.monitor_tid);
 	return (err);
 }
