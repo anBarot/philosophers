@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/07 13:54:27 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 18:19:49 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		ft_set_gphilo(void)
 		write(1, S_ERR_SEM, ft_strlen(S_ERR_SEM));
 		return (SEM_ERROR);
 	}
-	g_phi.is_dead = false;
+	g_phi.dead = false;
 	g_phi.nb_finished_threads = 0;
 	return (SUCCESS);
 }
@@ -44,7 +44,7 @@ int		ft_init_threads(void)
 		return (EXIT_FAILURE);
 	while (i < g_phi.philo_nb)
 	{
-		g_phi.philo_threads[i].philo_nbr = i;
+		g_phi.philo_threads[i].phi_nb = i;
 		g_phi.philo_threads[i].meal_nb = 0;
 		if ((err = pthread_create(&(g_phi.philo_threads[i].tid), NULL,
 					philo_routine, &(g_phi.philo_threads[i]))))

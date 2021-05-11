@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/07 16:04:15 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 18:19:49 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ int		ft_init_proc(void)
 		return (EXIT_FAILURE);
 	while (i < g_phi.philo_nb)
 	{
-		g_phi.philo_proc[i].philo_nbr = i;
+		g_phi.philo_proc[i].phi_nb = i;
 		g_phi.philo_proc[i].meal_nb = 0;
-		g_phi.philo_proc[i].is_dead = false;
+		g_phi.philo_proc[i].dead = false;
 		if ((g_phi.pid[i] = fork()) == -1)
 			return (EXIT_FAILURE);
 		else if (!g_phi.pid[i])

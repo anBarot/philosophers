@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 14:30:18 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 18:20:18 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define S_ERR_MUTEX	"Error : can't create mutex\n"
 # define S_ERR_THREAD	"Error : can't create thread\n"
 # define S_ERR_ARG		"Error : wrong arguments\n"
-# define S_STR_TEMPL	"00000000 <    > "
+# define S_STR_TEMPL	"________ <    > "
 
 enum				e_enum
 {
@@ -44,23 +44,22 @@ enum				e_enum
 typedef struct		s_thread
 {
 	pthread_t		tid;
-	int				philo_nbr;
+	int				phi_nb;
 	int				meal_nb;
 	int				last_time_eat;
-	pthread_mutex_t	read_time_mutex;
 }					t_thread;
 
 typedef struct		s_philo
 {
 	int				philo_nb;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				time_to_think;
+	int				tt_die;
+	int				tt_eat;
+	int				tt_sleep;
+	int				tt_think;
 	int				meal_lim;
 	int				nb_finished_threads;
 	bool			is_limited_meal;
-	bool			is_dead;
+	bool			dead;
 	int				nb_eaten;
 	char			*to_display;
 	pthread_t		monitor_tid;
@@ -79,7 +78,7 @@ int					ft_atoi(char *str);
 int					ft_strlen(char *str);
 void				*ft_calloc(int size);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
-void				ft_display_action(int nb, char *action);
+void				display_act(int nb, char *action);
 int					ft_get_timelaps();
 int					ft_init_threads();
 int					ft_set_gphilo(void);

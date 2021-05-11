@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/06 18:30:48 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 18:20:18 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ enum				e_enum
 typedef struct		s_thread
 {
 	pthread_t		tid;
-	int				philo_nbr;
+	int				phi_nb;
 	int				meal_nb;
 	int				last_time_eat;
 	pthread_t		monitor_tid;
@@ -52,13 +52,13 @@ typedef struct		s_thread
 typedef struct		s_philo
 {
 	int				philo_nb;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	int				tt_die;
+	int				tt_eat;
+	int				tt_sleep;
 	int				meal_lim;
 	int				nb_finished_threads;
 	bool			is_limited_meal;
-	bool			is_dead;
+	bool			dead;
 	t_thread		*philo_threads;
 	sem_t			*display_sem;
 	sem_t			*takef_sem;
@@ -74,7 +74,7 @@ int					ft_atoi(char *str);
 char				*ft_itoa(int nbr);
 int					ft_strlen(char *str);
 void				*ft_calloc(int size);
-void				ft_display_action(int nb, char *action);
+void				display_act(int nb, char *action);
 int					ft_get_timelaps();
 int					ft_init_threads();
 void				ft_set_philothreads(t_thread *philo_threads);

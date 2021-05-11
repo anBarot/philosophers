@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/07 14:41:42 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 18:20:18 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ enum				e_enum
 typedef struct		s_proc
 {
 	int				status;
-	bool			is_dead;
-	int				philo_nbr;
+	bool			dead;
+	int				phi_nb;
 	int				meal_nb;
 	int				last_time_eat;
 	pthread_t		monitor_tid;
@@ -60,9 +60,9 @@ typedef struct		s_philo
 	pid_t			*pid;
 	pthread_t		eating_monitor;
 	int				philo_nb;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	int				tt_die;
+	int				tt_eat;
+	int				tt_sleep;
 	int				meal_lim;
 	bool			is_limited_meal;
 	sem_t			*display_sem;
@@ -80,7 +80,7 @@ int					ft_atoi(char *str);
 char				*ft_itoa(int nbr);
 int					ft_strlen(char *str);
 void				*ft_calloc(int size);
-void				ft_display_action(int nb, char *action);
+void				display_act(int nb, char *action);
 int					ft_get_timelaps();
 int					ft_init_proc();
 void				ft_set_philothreads(t_proc *philo_threads);

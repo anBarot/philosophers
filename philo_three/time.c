@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 16:47:16 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/07 14:54:27 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 18:18:44 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*ft_itoa_time(int nbr)
 	return (str);
 }
 
-void	ft_display_action(int nb, char *action)
+void	display_act(int nb, char *action)
 {
 	char	*time_str;
 	char	*nbr_str;

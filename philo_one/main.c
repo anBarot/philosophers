@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 13:30:39 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 18:20:18 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,16 @@ int		ft_get_arguments(int ac, char **av)
 	if ((ac != 6 && ac != 5) ||
 		!is_arg_digit(av + 1) ||
 		(g_phi.philo_nb = ft_atoi(av[1])) < 2 || g_phi.philo_nb > 9999 ||
-		(g_phi.time_to_die = ft_atoi(av[2])) < 0 ||
-		(g_phi.time_to_eat = ft_atoi(av[3])) < 0 ||
-		(g_phi.time_to_sleep = ft_atoi(av[4])) < 0)
+		(g_phi.tt_die = ft_atoi(av[2])) < 0 ||
+		(g_phi.tt_eat = ft_atoi(av[3])) < 0 ||
+		(g_phi.tt_sleep = ft_atoi(av[4])) < 0)
 	{
 		write(1, S_ERR_ARG, ft_strlen(S_ERR_ARG));
 		return (ARG_ERROR);
 	}
-	if ((g_phi.time_to_think = (g_phi.time_to_die -
-			g_phi.time_to_eat - g_phi.time_to_sleep) / 2) < 0)
-		g_phi.time_to_think = 1;
+	if ((g_phi.tt_think = (g_phi.tt_die -
+			g_phi.tt_eat - g_phi.tt_sleep) / 2) < 0)
+		g_phi.tt_think = 1;
 	if (av[5])
 	{
 		if ((g_phi.meal_lim = ft_atoi(av[5])) <= 0)
