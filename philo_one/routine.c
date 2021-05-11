@@ -6,39 +6,34 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 19:02:05 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 19:41:48 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-void	*monitor_routine(void)
+void	*monitor_routine(t_thread *philo)
 {
-	int		i;
 	int		time;
 
 	while (g_phi.dead == false)
 	{
-		i = 0;
 		time = ft_get_timelaps();
-		while (i < g_phi.philo_nb)
+		pthread_mutex_lock(&(philo->read_time_mutex));
+		if ((time - philo->last_time_eat - 50) >= g_phi.tt_die)
 		{
-			pthread_mutex_lock(&(g_phi.read_time_mutex[i]));
-			if ((time - g_phi.philo_threads[i].last_time_eat) >= g_phi.tt_die)
-			{
-				g_phi.dead = true;
-				display_act(g_phi.philo_threads[i].phi_nb + 1, S_DIE);
-				pthread_mutex_unlock(&(g_phi.read_time_mutex[i]));
-				return (NULL);
-			}
-			pthread_mutex_unlock(&(g_phi.read_time_mutex[i]));
-			i++;
+			g_phi.dead = true;
+			display_act(philo->phi_nb + 1, S_DIE);
+			pthread_mutex_unlock(&(philo->read_time_mutex));
+			return (NULL);
 		}
+		pthread_mutex_unlock(&(philo->read_time_mutex));
+		usleep(1000);
 	}
 	return (NULL);
 }
 
-void	ft_taking_forks(t_thread *philo)
+void	taking_forks(t_thread *philo)
 {
 	pthread_mutex_lock(&(g_phi.taking_fork_mutex));
 	pthread_mutex_lock(&(g_phi.forks_mutex[(philo->phi_nb + 1)
@@ -51,10 +46,10 @@ void	ft_taking_forks(t_thread *philo)
 
 void	ft_eating_routine(t_thread *philo)
 {
-	ft_taking_forks(philo);
-	pthread_mutex_lock(&(g_phi.read_time_mutex[philo->phi_nb]));
+	taking_forks(philo);
+	pthread_mutex_lock(&(philo->read_time_mutex));
 	philo->last_time_eat = ft_get_timelaps();
-	pthread_mutex_unlock(&(g_phi.read_time_mutex[philo->phi_nb]));
+	pthread_mutex_unlock(&(philo->read_time_mutex));
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_EAT) : 0;
 	usleep(g_phi.tt_eat * 1000);
 	pthread_mutex_unlock(&(g_phi.forks_mutex[philo->phi_nb]));
@@ -63,14 +58,12 @@ void	ft_eating_routine(t_thread *philo)
 	philo->meal_nb = philo->meal_nb + 1;
 }
 
-void	*philo_routine(void *arg)
+void	*philo_routine(t_thread *philo)
 {
-	t_thread	*philo;
-
-	philo = (t_thread *)arg;
-	philo->last_time_eat = ft_get_timelaps();
 	if (philo->phi_nb % 2)
-		usleep(500);
+		usleep(1000);
+	philo->last_time_eat = ft_get_timelaps();
+	ft_init_monitor(philo);
 	while (g_phi.dead == false)
 	{
 		ft_eating_routine(philo);

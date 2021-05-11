@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 19:03:23 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 19:30:21 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	clear_philo(void)
 		i++;
 	}
 	free(g_phi.forks_mutex);
-	free(g_phi.read_time_mutex);
 	free(g_phi.philo_threads);
 	free(g_phi.to_display);
 }

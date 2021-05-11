@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 18:19:49 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 19:34:54 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int		ft_set_gphilo(void)
 	i = 0;
 	if (!(g_phi.forks_mutex = malloc(sizeof(pthread_mutex_t)
 										* g_phi.philo_nb)) ||
-		!(g_phi.read_time_mutex = malloc(sizeof(pthread_mutex_t)
-										* g_phi.philo_nb)) ||
 		(pthread_mutex_init(&g_phi.taking_fork_mutex, NULL)) ||
 		(pthread_mutex_init(&g_phi.display_mutex, NULL)) ||
 		(pthread_mutex_init(&g_phi.finished_meal_mutex, NULL)))
@@ -30,8 +28,7 @@ int		ft_set_gphilo(void)
 	}
 	while (i < g_phi.philo_nb)
 	{
-		if ((pthread_mutex_init(&g_phi.forks_mutex[i], NULL)) ||
-			pthread_mutex_init(&g_phi.read_time_mutex[i], NULL))
+		if ((pthread_mutex_init(&g_phi.forks_mutex[i], NULL)))
 		{
 			write(1, S_ERR_MUTEX, ft_strlen(S_ERR_MUTEX));
 			return (MUTEX_ERROR);
@@ -55,6 +52,7 @@ int		ft_init_threads(void)
 	gettimeofday(&g_startime, NULL);
 	while (i < g_phi.philo_nb)
 	{
+		pthread_mutex_init(&(g_phi.philo_threads[i].read_time_mutex), NULL);
 		g_phi.philo_threads[i].phi_nb = i;
 		g_phi.philo_threads[i].meal_nb = 0;
 		if ((err = pthread_create(&(g_phi.philo_threads[i].tid), NULL,
@@ -65,21 +63,20 @@ int		ft_init_threads(void)
 		}
 		i++;
 	}
-	ft_init_monitor();
 	return (SUCCESS);
 }
 
-int		ft_init_monitor(void)
+int		ft_init_monitor(t_thread *philo)
 {
 	int err;
 
 	err = 0;
-	if ((err = pthread_create(&(g_phi.monitor_tid), NULL,
-			monitor_routine, NULL)))
+	if ((err = pthread_create(&(philo->monitor_tid), NULL,
+			monitor_routine, philo)))
 	{
 		write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
 		return (err);
 	}
-	pthread_detach(g_phi.monitor_tid);
+	pthread_detach(philo->monitor_tid);
 	return (err);
 }
