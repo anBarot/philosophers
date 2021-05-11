@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 13:25:53 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/11 13:42:12 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int		ft_init_monitor(void)
 
 	err = 0;
 	if ((err = pthread_create(&(g_phi.monitor_tid), NULL,
-			monitor_routine, &err)))
+			monitor_routine, NULL)))
 	{
 		write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
 		return (err);
