@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 16:47:16 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 15:59:39 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 17:04:06 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		get_timelaps(void)
 	return (laps);
 }
 
-void	itoa_philo(int	nb, int i, char *str)
+void	itoa_philo(int nb, int i, char *str)
 {
 	char	*base;
 
@@ -40,7 +40,7 @@ void	itoa_philo(int	nb, int i, char *str)
 void	display_act(int nb, char *action)
 {
 	int	write_len;
-	
+
 	write_len = ft_strlen(S_STR_TEMPL) + ft_strlen(action);
 	sem_wait(g_philo.sem.display);
 	itoa_philo(get_timelaps(), 7, g_philo.to_display);

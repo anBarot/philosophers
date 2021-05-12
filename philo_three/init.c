@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 16:27:12 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 17:02:56 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		ft_set_gphilo(void)
 		return (EXIT_FAILURE);
 	g_philo.eat_info.meal_nb = 0;
 	g_philo.dead = false;
-	if (!(g_philo.to_display = ft_calloc(50)) || 
+	if (!(g_philo.to_display = ft_calloc(50)) ||
 		!(g_philo.pid = malloc(sizeof(pid_t) * g_philo.number)))
 		return (EXIT_FAILURE);
 	ft_memcpy(g_philo.to_display, S_STR_TEMPL, ft_strlen(S_STR_TEMPL));
@@ -68,7 +68,7 @@ int		ft_init_process(void)
 	return (EXIT_SUCCESS);
 }
 
-int		ft_init_monitor()
+int		ft_init_monitor(void)
 {
 	int err;
 

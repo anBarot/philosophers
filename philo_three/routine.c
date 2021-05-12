@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 16:32:32 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 17:01:42 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	*monitor_routine(void)
 	{
 		if (g_philo.eat_info.is_limited_meal == true &&
 				g_philo.eat_info.meal_nb == g_philo.eat_info.meal_lim)
-			break;
+			break ;
 		time = get_timelaps();
 		if ((time - g_philo.last_time_eat) >= g_philo.time_to.die)
 		{
@@ -70,7 +70,7 @@ void	eating_routine(void)
 	sem_post(g_philo.sem.forks);
 }
 
-void	ft_philo_routine()
+void	ft_philo_routine(void)
 {
 	g_philo.last_time_eat = get_timelaps();
 	if (ft_init_monitor(g_philo.monitor_tid))
@@ -78,7 +78,7 @@ void	ft_philo_routine()
 	while (g_philo.dead == false)
 	{
 		eating_routine();
-		if (g_philo.eat_info.is_limited_meal == true && 
+		if (g_philo.eat_info.is_limited_meal == true &&
 				g_philo.eat_info.meal_nb == g_philo.eat_info.meal_lim
 				&& g_philo.dead == false)
 		{
@@ -94,8 +94,6 @@ void	ft_philo_routine()
 		usleep(g_philo.time_to.sleep * 1000);
 		display_act(g_philo.id, S_THINK);
 	}
-	free(g_philo.to_display);
-	free(g_philo.pid);
 	while (1)
 		usleep(1);
 }

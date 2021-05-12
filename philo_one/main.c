@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 12:20:35 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 16:58:32 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int		main(int ac, char **av)
 		pthread_join(g_phi.philo_threads[i].tid, NULL);
 		i++;
 	}
-	clear_philo();
 	usleep(10000);
+	clear_philo();
 	return (0);
 }
