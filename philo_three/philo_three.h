@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 12:12:13 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 16:26:01 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define S_ERR_SEM		"Error : can't create semaphore\n"
 # define S_ERR_THREAD	"Error : can't create thread\n"
 # define S_ERR_ARG		"Error : wrong arguments\n"
+# define S_STR_TEMPL	"________ <    > "
 
 enum				e_enum
 {
@@ -44,50 +45,59 @@ enum				e_enum
 	THREAD_ERROR,
 };
 
-typedef struct		s_proc
+typedef struct		s_sem
 {
-	int				status;
-	bool			dead;
-	int				phi_nb;
-	int				meal_nb;
-	int				last_time_eat;
-	pthread_t		monitor_tid;
-}					t_proc;
+	sem_t			*display;
+	sem_t			*takef;
+	sem_t			*forks;
+	sem_t			*end_program;
+	sem_t			*finished_meal;
+}					t_sem;
 
+typedef struct		s_time
+{
+	int				die;
+	int				eat;
+	int				sleep;
+}					t_time;
+
+typedef struct		s_eat
+{
+	bool			is_limited_meal;
+	int				meal_nb;
+	int				meal_lim;
+}					t_eat ;
+					
 typedef struct		s_philo
 {
-	t_proc			*philo_proc;
-	pid_t			*pid;
-	pthread_t		eating_monitor;
-	int				philo_nb;
-	int				tt_die;
-	int				tt_eat;
-	int				tt_sleep;
-	int				meal_lim;
-	bool			is_limited_meal;
-	sem_t			*display_sem;
-	sem_t			*takef_sem;
-	sem_t			*forks_sem;
-	sem_t			*end_program_sem;
-	sem_t			*finished_meal_sem;
+	int				last_time_eat;
+	bool			dead;
+	int				number;
+	int				id;
+	char			*to_display;
+	pid_t			*pid;	
+	t_eat			eat_info;
+	pthread_t		monitor_tid;
+	pthread_t		eating_routine;
+	t_time			time_to;
+	t_sem			sem;
 }					t_philo;
 
-t_philo g_phi;
-struct timeval g_startime;
+t_philo	g_philo;
+struct timeval	g_startime;
 
-void				ft_looptoa(int nbr, char *res, char *base);
+void				*ft_memcpy(void *dest, const void *src, size_t n);
 int					ft_atoi(char *str);
-char				*ft_itoa(int nbr);
 int					ft_strlen(char *str);
 void				*ft_calloc(int size);
 void				display_act(int nb, char *action);
 int					get_timelaps();
-int					ft_init_proc();
-void				ft_set_philothreads(t_proc *philo_threads);
+int					ft_init_process();
 int					ft_set_gphilo(void);
-void				ft_philo_routine(t_proc *philo);
-int					ft_init_monitor(t_proc *philo);
-void				*ft_monitor_routine(void *arg);
-void				clear_philo(void);
+void				ft_philo_routine();
+int					ft_init_monitor();
+void				*monitor_routine();
+void				*meal_count_routine();
+void				clear_philo();
 
 #endif

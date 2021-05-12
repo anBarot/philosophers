@@ -6,13 +6,13 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 16:47:16 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 12:12:13 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 12:19:19 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-int		ft_get_timelaps(void)
+int		get_timelaps(void)
 {
 	int				laps;
 	struct timeval	end;

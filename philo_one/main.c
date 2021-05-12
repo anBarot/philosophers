@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 11:26:25 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 12:20:35 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,13 @@ int		ft_get_arguments(int ac, char **av)
 		(g_phi.philo_nb = ft_atoi(av[1])) < 2 || g_phi.philo_nb > 9999 ||
 		(g_phi.tt_die = ft_atoi(av[2])) < 0 ||
 		(g_phi.tt_eat = ft_atoi(av[3])) < 0 ||
-		(g_phi.tt_sleep = ft_atoi(av[4])) < 0)
+		(g_phi.tt_sleep = ft_atoi(av[4])) < 0 ||
+		!(g_phi.to_display = ft_calloc(50)))
 	{
 		write(1, S_ERR_ARG, ft_strlen(S_ERR_ARG));
 		return (ARG_ERROR);
 	}
+	ft_memcpy(g_phi.to_display, S_STR_TEMPL, ft_strlen(S_STR_TEMPL));
 	if ((g_phi.tt_think = (g_phi.tt_die -
 			g_phi.tt_eat - g_phi.tt_sleep) / 2) < 0)
 		g_phi.tt_think = 1;
@@ -74,9 +76,6 @@ int		ft_get_arguments(int ac, char **av)
 	}
 	else
 		g_phi.is_limited_meal = false;
-	if (!(g_phi.to_display = ft_calloc(50)))
-		return (EXIT_FAILURE);
-	ft_memcpy(g_phi.to_display, S_STR_TEMPL, ft_strlen(S_STR_TEMPL));
 	return (SUCCESS);
 }
 
