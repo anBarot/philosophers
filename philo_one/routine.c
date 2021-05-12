@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 19:54:50 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 12:12:13 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ void	*monitor_routine(t_thread *philo)
 
 	while (g_phi.dead == false)
 	{
-		time = ft_get_timelaps();
+		if (g_phi.is_limited_meal == true && philo->meal_nb == g_phi.meal_lim)
+			break ;
+		time = get_timelaps();
 		pthread_mutex_lock(&(philo->read_time_mutex));
 		if ((time - philo->last_time_eat) >= g_phi.tt_die)
 		{
@@ -44,11 +46,11 @@ void	taking_forks(t_thread *philo)
 	pthread_mutex_unlock(&(g_phi.taking_fork_mutex));
 }
 
-void	ft_eating_routine(t_thread *philo)
+void	eating_routine(t_thread *philo)
 {
 	taking_forks(philo);
 	pthread_mutex_lock(&(philo->read_time_mutex));
-	philo->last_time_eat = ft_get_timelaps();
+	philo->last_time_eat = get_timelaps();
 	pthread_mutex_unlock(&(philo->read_time_mutex));
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_EAT) : 0;
 	usleep(g_phi.tt_eat * 1000);
@@ -60,13 +62,13 @@ void	ft_eating_routine(t_thread *philo)
 
 void	*philo_routine(t_thread *philo)
 {
+	philo->last_time_eat = get_timelaps();
+	ft_init_monitor(philo);
 	if (philo->phi_nb % 2)
 		usleep(1000);
-	philo->last_time_eat = ft_get_timelaps();
-	ft_init_monitor(philo);
 	while (g_phi.dead == false)
 	{
-		ft_eating_routine(philo);
+		eating_routine(philo);
 		if (g_phi.is_limited_meal == true && philo->meal_nb == g_phi.meal_lim)
 		{
 			(g_phi.dead == false) ? display_act(philo->phi_nb, S_REACHED) : 0;

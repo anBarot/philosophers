@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 18:20:18 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 11:58:26 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	clear_philo(void)
 {
 	free(g_phi.philo_threads);
+	free(g_phi.to_display);
 	sem_close(g_phi.display_sem);
 	sem_close(g_phi.finished_meal_sem);
 	sem_close(g_phi.forks_sem);
@@ -48,11 +49,13 @@ int		ft_get_arguments(int ac, char **av)
 		(g_phi.philo_nb = ft_atoi(av[1])) < 2 ||
 		(g_phi.tt_die = ft_atoi(av[2])) < 0 ||
 		(g_phi.tt_eat = ft_atoi(av[3])) < 0 ||
-		(g_phi.tt_sleep = ft_atoi(av[4])) < 0)
+		(g_phi.tt_sleep = ft_atoi(av[4])) < 0 ||
+		!(g_phi.to_display = ft_calloc(50)))
 	{
 		write(1, S_ERR_ARG, ft_strlen(S_ERR_ARG));
 		return (ARG_ERROR);
 	}
+	ft_memcpy(g_phi.to_display, S_STR_TEMPL, ft_strlen(S_STR_TEMPL));
 	if (av[5])
 	{
 		if ((g_phi.meal_lim = ft_atoi(av[5])) <= 0)

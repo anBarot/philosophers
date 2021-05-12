@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 16:47:16 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 18:18:44 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 12:12:13 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	itoa_philo(int	nb, int i)
 void	display_act(int nb, char *action)
 {
 	pthread_mutex_lock(&(g_phi.display_mutex));
-	itoa_philo(ft_get_timelaps(), 7);
+	itoa_philo(get_timelaps(), 7);
 	itoa_philo(nb, 13);
 	ft_memcpy(&(g_phi.to_display[ft_strlen(S_STR_TEMPL)]), action,
 				ft_strlen(action));

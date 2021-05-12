@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 18:20:18 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 12:12:13 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void	*ft_monitor_routine(void *arg)
 	t_proc *philo;
 
 	philo = (t_proc *)arg;
-	philo->last_time_eat = ft_get_timelaps();
+	philo->last_time_eat = get_timelaps();
 	while (philo->dead == false && !(g_phi.is_limited_meal == true &&
 	philo->meal_nb == g_phi.meal_lim))
 	{
-		if ((ft_get_timelaps() - philo->last_time_eat) >= g_phi.tt_die)
+		if ((get_timelaps() - philo->last_time_eat) >= g_phi.tt_die)
 		{
 			display_act(philo->phi_nb, S_DIE);
 			sem_wait(g_phi.display_sem);
@@ -32,7 +32,7 @@ void	*ft_monitor_routine(void *arg)
 	return (NULL);
 }
 
-void	ft_eating_routine(t_proc *philo)
+void	eating_routine(t_proc *philo)
 {
 	sem_wait(g_phi.takef_sem);
 	sem_wait(g_phi.forks_sem);
@@ -41,7 +41,7 @@ void	ft_eating_routine(t_proc *philo)
 	display_act(philo->phi_nb, S_FORK);
 	display_act(philo->phi_nb, S_EAT);
 	sem_post(g_phi.takef_sem);
-	philo->last_time_eat = ft_get_timelaps();
+	philo->last_time_eat = get_timelaps();
 	usleep(g_phi.tt_eat * 1000);
 	philo->meal_nb = philo->meal_nb + 1;
 	sem_post(g_phi.forks_sem);
@@ -54,7 +54,7 @@ void	ft_philo_routine(t_proc *philo)
 		exit(PROC_ERROR);
 	while (philo->dead == false)
 	{
-		ft_eating_routine(philo);
+		eating_routine(philo);
 		if (g_phi.is_limited_meal == true && philo->meal_nb == g_phi.meal_lim
 			&& philo->dead == false)
 		{

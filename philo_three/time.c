@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 16:47:16 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 18:18:44 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 12:12:13 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	display_act(int nb, char *action)
 	char	*nbr_str;
 
 	sem_wait(g_phi.display_sem);
-	time_str = ft_itoa_time(ft_get_timelaps());
+	time_str = ft_itoa_time(get_timelaps());
 	nbr_str = ft_itoa(nb + 1);
 	write(1, time_str, ft_strlen(time_str));
 	write(1, " <", 2);

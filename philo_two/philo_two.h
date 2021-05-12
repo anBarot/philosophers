@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 18:20:18 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 12:14:59 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define S_ERR_SEM		"Error : can't create semaphore\n"
 # define S_ERR_THREAD	"Error : can't create thread\n"
 # define S_ERR_ARG		"Error : wrong arguments\n"
+# define S_STR_TEMPL	"________ <    > "
 
 enum				e_enum
 {
@@ -59,6 +60,7 @@ typedef struct		s_philo
 	int				nb_finished_threads;
 	bool			is_limited_meal;
 	bool			dead;
+	char			*to_display;
 	t_thread		*philo_threads;
 	sem_t			*display_sem;
 	sem_t			*takef_sem;
@@ -69,18 +71,17 @@ typedef struct		s_philo
 t_philo g_phi;
 struct timeval g_startime;
 
-void				ft_looptoa(int nbr, char *res, char *base);
+void				*ft_memcpy(void *dest, const void *src, size_t n);
 int					ft_atoi(char *str);
-char				*ft_itoa(int nbr);
 int					ft_strlen(char *str);
 void				*ft_calloc(int size);
 void				display_act(int nb, char *action);
-int					ft_get_timelaps();
+int					get_timelaps();
 int					ft_init_threads();
 void				ft_set_philothreads(t_thread *philo_threads);
 int					ft_set_gphilo(void);
 void				*philo_routine();
+void				*monitor_routine();
 int					ft_init_monitor(t_thread *philo);
-void				*monitor_routine(void *arg);
 
 #endif

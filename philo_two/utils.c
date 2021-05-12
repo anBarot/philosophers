@@ -6,11 +6,25 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:08:27 by abarot            #+#    #+#             */
-/*   Updated: 2021/03/06 10:24:28 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 11:45:55 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
+
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	if (!dest || !src)
+		return (0);
+	while (n)
+	{
+		*(char *)dest = *(char *)src;
+		dest++;
+		src++;
+		n--;
+	}
+	return (dest);
+}
 
 void	*ft_calloc(int size)
 {
@@ -61,27 +75,4 @@ int		ft_atoi(char *str)
 		str++;
 	}
 	return (nbr * sign);
-}
-
-void	ft_looptoa(int nbr, char *res, char *base)
-{
-	if (nbr >= ft_strlen(base))
-		ft_looptoa(nbr / ft_strlen(base), res, base);
-	res[ft_strlen(res)] = base[nbr % ft_strlen(base)];
-}
-
-char	*ft_itoa(int nbr)
-{
-	char *str;
-
-	if (!(str = ft_calloc(12)))
-		return (NULL);
-	if (nbr < 0)
-	{
-		str[0] = '-';
-		ft_looptoa(nbr, str + 1, "0123456789");
-	}
-	else
-		ft_looptoa(nbr, str, "0123456789");
-	return (str);
 }

@@ -6,59 +6,13 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 16:47:16 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/11 18:19:49 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 12:15:16 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
 
-int		ft_decimal_nbr(int nbr)
-{
-	int i;
-
-	i = 1;
-	while (nbr >= 10)
-	{
-		nbr = nbr / 10;
-		i++;
-	}
-	return (i);
-}
-
-char	*ft_itoa_time(int nbr)
-{
-	char *str;
-
-	if (!(str = ft_calloc(9)))
-		return (NULL);
-	str = memset(str, '0', 8 - ft_decimal_nbr(nbr));
-	ft_looptoa(nbr, str, "0123456789");
-	return (str);
-}
-
-void	display_act(int nb, char *action)
-{
-	char	*time_str;
-	char	*nbr_str;
-
-	if (g_phi.dead == false)
-	{
-		time_str = ft_itoa_time(ft_get_timelaps());
-		nbr_str = ft_itoa(nb + 1);
-		sem_wait(g_phi.display_sem);
-		write(1, time_str, ft_strlen(time_str));
-		write(1, " <", 2);
-		write(1, nbr_str, ft_strlen(nbr_str));
-		write(1, "> ", 2);
-		write(1, " ", 1);
-		write(1, action, ft_strlen(action));
-		sem_post(g_phi.display_sem);
-		free(time_str);
-		free(nbr_str);
-	}
-}
-
-int		ft_get_timelaps(void)
+int		get_timelaps(void)
 {
 	int				laps;
 	struct timeval	end;
@@ -67,4 +21,30 @@ int		ft_get_timelaps(void)
 	laps = ((end.tv_sec * 1000000 + end.tv_usec) -
 	(g_startime.tv_sec * 1000000 + g_startime.tv_usec)) / 1000;
 	return (laps);
+}
+
+void	itoa_philo(int	nb, int i)
+{
+	char	*base;
+
+	base = "0123456789";
+	while (nb >= 10)
+	{
+		g_phi.to_display[i] = nb % 10 + '0';
+		i--;
+		nb = nb / 10;
+	}
+	g_phi.to_display[i] = nb + '0';
+}
+
+void	display_act(int nb, char *action)
+{
+	sem_wait(g_phi.display_sem);
+	itoa_philo(get_timelaps(), 7);
+	itoa_philo(nb, 13);
+	ft_memcpy(&(g_phi.to_display[ft_strlen(S_STR_TEMPL)]), action,
+				ft_strlen(action));
+	write(STDOUT_FILENO, g_phi.to_display, ft_strlen(S_STR_TEMPL) + 
+						ft_strlen(action));
+	sem_post(g_phi.display_sem);
 }
