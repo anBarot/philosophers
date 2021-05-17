@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/17 12:05:30 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/17 12:09:41 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@ void	*monitor_routine(t_thread *philo)
 	{
 		if (g_phi.is_limited_meal == true && philo->meal_nb == g_phi.meal_lim)
 			break ;
-		time = get_timelaps();
 		pthread_mutex_lock(&(philo->read_time_mutex));
-		if ((time - philo->last_time_eat) >= g_phi.tt_die)
+		if ((get_timelaps() - philo->last_time_eat) >= g_phi.tt_die)
 		{
 			g_phi.dead = true;
 			display_act(philo->phi_nb + 1, S_DIE);
@@ -30,7 +29,6 @@ void	*monitor_routine(t_thread *philo)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&(philo->read_time_mutex));
-		usleep(1000);
 	}
 	return (NULL);
 }
