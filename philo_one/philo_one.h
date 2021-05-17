@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 12:12:13 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/17 11:53:33 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct		s_philo
 	int				nb_finished_threads;
 	bool			is_limited_meal;
 	bool			dead;
+	bool			get_started;
 	int				nb_eaten;
 	char			*to_display;
 	t_thread		*philo_threads;
