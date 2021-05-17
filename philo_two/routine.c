@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/17 12:04:06 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 18:18:11 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	*monitor_routine(t_thread *philo)
 			return (NULL);
 		}
 		sem_post(g_phi.finished_meal_sem);
+		ft_usleep(1000);
 	}
 	return (NULL);
 }
@@ -46,7 +47,7 @@ void	eating_routine(t_thread *philo)
 	sem_wait(g_phi.finished_meal_sem);
 	philo->last_time_eat = get_timelaps();
 	sem_post(g_phi.finished_meal_sem);
-	usleep(g_phi.tt_eat * 1000);
+	ft_usleep(g_phi.tt_eat * 1000);
 	philo->meal_nb = philo->meal_nb + 1;
 	sem_post(g_phi.forks_sem);
 	sem_post(g_phi.forks_sem);
@@ -70,7 +71,7 @@ void	*philo_routine(t_thread *philo)
 			return (NULL);
 		}
 		(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_SLEEP) : 0;
-		usleep(g_phi.tt_sleep * 1000);
+		ft_usleep(g_phi.tt_sleep * 1000);
 		(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_THINK) : 0;
 	}
 	return (NULL);

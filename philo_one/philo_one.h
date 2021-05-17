@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/17 11:53:33 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 18:06:23 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ typedef struct		s_philo
 	int				nb_finished_threads;
 	bool			is_limited_meal;
 	bool			dead;
-	bool			get_started;
 	int				nb_eaten;
 	char			*to_display;
 	t_thread		*philo_threads;
@@ -87,5 +86,6 @@ void				ft_set_philothreads(t_thread *philo_threads);
 void				*philo_routine();
 int					ft_init_monitor(t_thread *philo);
 void				*monitor_routine();
+void				ft_usleep(unsigned int n);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 17:02:31 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 18:19:53 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,6 @@ int					ft_init_monitor();
 void				*monitor_routine();
 void				*meal_count_routine();
 void				clear_philo();
+void				ft_usleep(unsigned int n);
 
 #endif

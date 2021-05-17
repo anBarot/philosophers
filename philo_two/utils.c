@@ -6,11 +6,27 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:08:27 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 11:45:55 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 18:19:20 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
+
+void	ft_usleep(unsigned int n)
+{
+	struct timeval	start;
+	struct timeval	step;
+
+	gettimeofday(&start, NULL);
+	while (1)
+	{
+		usleep(50);
+		gettimeofday(&step, NULL);
+		if ((size_t)(((size_t)(step.tv_sec - start.tv_sec)) * 1000000 +
+		((size_t)(step.tv_usec - start.tv_usec))) > n)
+			break ;
+	}
+}
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
