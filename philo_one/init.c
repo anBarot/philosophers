@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/18 13:49:53 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/18 13:53:39 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		ft_init_threads(void)
 		}
 		i++;
 	}
-	usleep(1000);
+	gettimeofday(&g_startime, NULL);
 	g_phi.get_started = true;
 	return (SUCCESS);
 }
