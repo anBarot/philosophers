@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/18 13:05:50 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/18 13:31:47 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,13 @@ void	eating_routine(t_thread *philo)
 
 void	*philo_routine(t_thread *philo)
 {
-	while(g_phi.get_started == false)
-		;
 	philo->last_time_eat = get_time();
 	ft_init_monitor(philo);
+	while(g_phi.get_started == false)
+		;
 	(philo->phi_nb % 2) ? usleep(1000) : 0;
+	if (g_phi.philo_nb % 2 == 1 && philo->phi_nb == g_phi.philo_nb - 1)
+		usleep(2000);
 	while (g_phi.dead == false)
 	{
 		eating_routine(philo);
@@ -84,8 +86,7 @@ void	*philo_routine(t_thread *philo)
 		(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_SLEEP, get_time()) : 0;
 		usleep(g_phi.tt_sleep * 1000);
 		(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_THINK, get_time()) : 0;
-		if (g_phi.philo_nb % 2 == 1 && philo->phi_nb % 2)
-			usleep(1000);
+		usleep(g_phi.tt_think * 1000);
 	}
 	return (NULL);
 }
