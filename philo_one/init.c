@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/18 13:53:39 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/18 14:16:36 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int		ft_set_gphilo(void)
 	}
 	g_phi.dead = false;
 	g_phi.nb_finished_threads = 0;
-	g_phi.nb_eaten = 0;
 	return (SUCCESS);
 }
 
@@ -47,38 +46,40 @@ int		ft_init_threads(void)
 	int			err;
 
 	i = 0;
-	if (!(g_phi.philo_threads = malloc(sizeof(t_thread) * g_phi.philo_nb)))
+	if (!(g_phi.phi_unit = malloc(sizeof(t_thread) * g_phi.philo_nb)))
 		return (EXIT_FAILURE);
 	g_phi.get_started = false;
 	while (i < g_phi.philo_nb)
 	{
-		pthread_mutex_init(&(g_phi.philo_threads[i].read_time_mutex), NULL);
-		g_phi.philo_threads[i].phi_nb = i;
-		g_phi.philo_threads[i].meal_nb = 0;
-		if ((err = pthread_create(&(g_phi.philo_threads[i].tid), NULL,
-				philo_routine, &(g_phi.philo_threads[i]))))
+		pthread_mutex_init(&(g_phi.phi_unit[i].read_time_mutex), NULL);
+		g_phi.phi_unit[i].phi_nb = i;
+		g_phi.phi_unit[i].meal_nb = 0;
+		g_phi.phi_unit[i].last_time_eat = 0;
+		if ((err = pthread_create(&(g_phi.phi_unit[i].tid), NULL,
+				philo_routine, &(g_phi.phi_unit[i]))))
 		{
 			write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
 			return (THREAD_ERROR);
 		}
 		i++;
 	}
+	ft_init_monitor();
 	gettimeofday(&g_startime, NULL);
 	g_phi.get_started = true;
 	return (SUCCESS);
 }
 
-int		ft_init_monitor(t_thread *philo)
+int		ft_init_monitor(void)
 {
 	int err;
 
 	err = 0;
-	if ((err = pthread_create(&(philo->monitor_tid), NULL,
-			monitor_routine, philo)))
+	if ((err = pthread_create(&(g_phi.monitor_tid), NULL,
+			monitor_routine, NULL)))
 	{
 		write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
 		return (err);
 	}
-	pthread_detach(philo->monitor_tid);
+	pthread_detach(g_phi.monitor_tid);
 	return (err);
 }

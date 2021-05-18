@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/18 13:53:02 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/18 14:14:54 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	clear_philo(void)
 		i++;
 	}
 	free(g_phi.forks_mutex);
-	free(g_phi.philo_threads);
+	free(g_phi.phi_unit);
 	free(g_phi.to_display);
 }
 
@@ -89,7 +89,7 @@ int		main(int ac, char **av)
 	i = 0;
 	while (i < g_phi.philo_nb)
 	{
-		pthread_join(g_phi.philo_threads[i].tid, NULL);
+		pthread_join(g_phi.phi_unit[i].tid, NULL);
 		i++;
 	}
 	usleep(10000);
