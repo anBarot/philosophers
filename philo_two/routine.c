@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 18:18:11 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/18 11:43:14 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	*philo_routine(t_thread *philo)
 	philo->last_time_eat = get_timelaps();
 	if (ft_init_monitor(philo))
 		return ((void *)THREAD_ERROR);
+	(philo->phi_nb % 2) ? usleep(1000) : 0;
 	while (g_phi.dead == false)
 	{
 		eating_routine(philo);

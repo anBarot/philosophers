@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 18:07:15 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/18 11:48:43 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int		main(int ac, char **av)
 {
 	int i;
 
+	gettimeofday(&g_startime, NULL);
 	if (ft_get_arguments(ac, av) || ft_set_gphilo() != SUCCESS ||
 		ft_init_threads() != SUCCESS)
 		return (EXIT_FAILURE);

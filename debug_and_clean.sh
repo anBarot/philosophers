@@ -16,11 +16,12 @@ fi
 
 if [ $PROGRAM = "1" ] ; then
 make -C philo_one
-./philo_one/philo_one $ARG_PHILO > debug.txt
-cat debug.txt | grep "<   1>" > one_one.txt
-cat debug.txt | grep "<   2>" > one_two.txt
-cat debug.txt | grep "<   3>" > one_three.txt
-cat debug.txt | grep "<   4>" > one_four.txt
+./philo_one/philo_one 4 410 200 200 > debug_2.txt
+./philo_one/philo_one 5 800 200 200 > debug_1.txt
+# cat debug.txt | grep "<   1>" > one_one.txt
+# cat debug.txt | grep "<   2>" > one_two.txt
+# cat debug.txt | grep "<   3>" > one_three.txt
+# cat debug.txt | grep "<   4>" > one_four.txt
 elif [ $PROGRAM = "2" ] ; then
 make -C philo_two
 ./philo_two/philo_two $ARG_PHILO > debug.txt
