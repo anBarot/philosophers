@@ -6,13 +6,13 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 16:47:16 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/18 12:07:08 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/18 12:58:25 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_one.h"
 
-int		get_timelaps(void)
+int		get_time(void)
 {
 	int				laps;
 	struct timeval	end;
@@ -37,16 +37,10 @@ void	itoa_philo(int nb, int i)
 	g_phi.to_display[i] = nb + '0';
 }
 
-void	display_act(int nb, char *action, t_thread *philo, int start)
+void	display_act(int nb, char *action, int time)
 {
-	int lost_time;
-
-	pthread_mutex_lock(&(philo->read_time_mutex));
 	pthread_mutex_lock(&(g_phi.display_mutex));
-	lost_time = get_timelaps() - start;
-	philo->last_time_eat = philo->last_time_eat + lost_time;
-	pthread_mutex_unlock(&(philo->read_time_mutex));
-	itoa_philo(start, 7);
+	itoa_philo(time, 7);
 	itoa_philo(nb, 13);
 	ft_memcpy(&(g_phi.to_display[ft_strlen(S_STR_TEMPL)]), action,
 				ft_strlen(action));
