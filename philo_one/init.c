@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/18 14:16:36 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/18 14:25:20 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int		ft_init_threads(void)
 	if (!(g_phi.phi_unit = malloc(sizeof(t_thread) * g_phi.philo_nb)))
 		return (EXIT_FAILURE);
 	g_phi.get_started = false;
+	ft_init_monitor();
 	while (i < g_phi.philo_nb)
 	{
 		pthread_mutex_init(&(g_phi.phi_unit[i].read_time_mutex), NULL);
@@ -63,7 +64,6 @@ int		ft_init_threads(void)
 		}
 		i++;
 	}
-	ft_init_monitor();
 	gettimeofday(&g_startime, NULL);
 	g_phi.get_started = true;
 	return (SUCCESS);
