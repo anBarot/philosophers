@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/18 13:31:47 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/18 13:43:54 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	*monitor_routine(t_thread *philo)
 {
 	int time;
 
+	while (g_phi.get_started == false)
+		;
 	while (g_phi.dead == false)
 	{
 		if (g_phi.is_limited_meal == true && philo->meal_nb == g_phi.meal_lim)
@@ -65,8 +67,8 @@ void	eating_routine(t_thread *philo)
 
 void	*philo_routine(t_thread *philo)
 {
-	philo->last_time_eat = get_time();
 	ft_init_monitor(philo);
+	philo->last_time_eat = get_time();
 	while(g_phi.get_started == false)
 		;
 	(philo->phi_nb % 2) ? usleep(1000) : 0;
@@ -86,7 +88,7 @@ void	*philo_routine(t_thread *philo)
 		(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_SLEEP, get_time()) : 0;
 		usleep(g_phi.tt_sleep * 1000);
 		(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_THINK, get_time()) : 0;
-		usleep(g_phi.tt_think * 1000);
+		(g_phi.philo_nb % 2 == 1) ? usleep(g_phi.tt_think * 1000) : 0;
 	}
 	return (NULL);
 }
