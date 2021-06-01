@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/18 15:03:43 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/18 15:19:28 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,9 @@ void	taking_forks(t_thread *philo)
 
 void	eating_routine(t_thread *philo)
 {
-	int	time;
-
 	taking_forks(philo);
-	time = get_time();
 	pthread_mutex_lock(&(philo->read_time_mutex));
-	philo->last_time_eat = time;
+	philo->last_time_eat = get_time();
 	pthread_mutex_unlock(&(philo->read_time_mutex));
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_EAT) : 0;
 	usleep(g_phi.tt_eat * 1000);
