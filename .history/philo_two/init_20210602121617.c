@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/02 12:31:59 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/02 12:16:17 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ int		ft_set_gphilo(void)
 		!(g_phi.display_sem =
 		sem_open("display_sem", O_CREAT | O_EXCL, S_IRWXU, 1)) ||
 		!(g_phi.finished_meal_sem =
-		sem_open("finished_meal_sem", O_CREAT | O_EXCL, S_IRWXU, 1)) ||
-		!(g_phi.read_time_sem =
-		sem_open("read_time_sem", O_CREAT | O_EXCL, S_IRWXU, 1)))
+		sem_open("finished_meal_sem", O_CREAT | O_EXCL, S_IRWXU, 1)))
 	{
 		write(1, S_ERR_SEM, ft_strlen(S_ERR_SEM));
 		return (SEM_ERROR);
@@ -44,8 +42,6 @@ int		ft_init_threads(void)
 	i = 0;
 	if (!(g_phi.philo_threads = malloc(sizeof(t_thread) * g_phi.philo_nb)))
 		return (EXIT_FAILURE);
-	g_phi.get_started = false;
-	ft_init_monitor();
 	while (i < g_phi.philo_nb)
 	{
 		g_phi.philo_threads[i].phi_nb = i;
@@ -63,17 +59,17 @@ int		ft_init_threads(void)
 	return (SUCCESS);
 }
 
-int		ft_init_monitor(void)
+int		ft_init_monitor(t_thread *philo)
 {
 	int err;
 
 	err = 0;
-	if ((err = pthread_create(&(g_phi.monitor_tid), NULL,
-			monitor_routine, NULL)))
+	if ((err = pthread_create(&(philo->monitor_tid), NULL,
+				monitor_routine, philo)))
 	{
 		write(1, S_ERR_THREAD, ft_strlen(S_ERR_THREAD));
-		return (err);
+		return (THREAD_ERROR);
 	}
-	pthread_detach(g_phi.monitor_tid);
-	return (err);
+	pthread_detach(philo->monitor_tid);
+	return (SUCCESS);
 }

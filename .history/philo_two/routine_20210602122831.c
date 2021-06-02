@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/02 12:33:03 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/02 12:28:31 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	eating_routine(t_thread *philo)
 	sem_post(g_phi.takef_sem);
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_EAT) : 0;
 	sem_wait(g_phi.read_time_sem);
-	philo->last_time_eat = get_time();
+	philo->last_time_eat = get_timelaps();
 	sem_post(g_phi.read_time_sem);
 	ft_usleep(g_phi.tt_eat * 1000);
 	philo->meal_nb = philo->meal_nb + 1;

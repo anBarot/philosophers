@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 16:33:04 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/02 12:31:59 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/02 12:31:12 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		ft_set_gphilo(void)
 		!(g_phi.display_sem =
 		sem_open("display_sem", O_CREAT | O_EXCL, S_IRWXU, 1)) ||
 		!(g_phi.finished_meal_sem =
-		sem_open("finished_meal_sem", O_CREAT | O_EXCL, S_IRWXU, 1)) ||
+		sem_open("finished_meal_sem", O_CREAT | O_EXCL, S_IRWXU, 1)))
 		!(g_phi.read_time_sem =
 		sem_open("read_time_sem", O_CREAT | O_EXCL, S_IRWXU, 1)))
 	{

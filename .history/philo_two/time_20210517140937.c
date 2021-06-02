@@ -6,13 +6,13 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 16:47:16 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/02 12:33:05 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 17:04:50 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
 
-int		get_time(void)
+int		get_timelaps(void)
 {
 	int				laps;
 	struct timeval	end;
@@ -40,7 +40,7 @@ void	itoa_philo(int nb, int i)
 void	display_act(int nb, char *action)
 {
 	sem_wait(g_phi.display_sem);
-	itoa_philo(get_time(), 7);
+	itoa_philo(get_timelaps(), 7);
 	itoa_philo(nb, 13);
 	ft_memcpy(&(g_phi.to_display[ft_strlen(S_STR_TEMPL)]), action,
 				ft_strlen(action));

@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/02 12:31:52 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/02 12:15:00 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int		main(int ac, char **av)
 	sem_unlink("display_sem");
 	sem_unlink("forks_sem");
 	sem_unlink("takef_sem");
-	sem_unlink("read_time_sem");
 	gettimeofday(&g_startime, NULL);
 	if (ft_get_arguments(ac, av) != SUCCESS || ft_set_gphilo() != SUCCESS ||
 		ft_init_threads() == EXIT_FAILURE)

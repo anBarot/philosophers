@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/02 12:33:03 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/02 12:20:09 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ void	*monitor_routine(void)
 		i = 0;
 		while (i < g_phi.philo_nb)
 		{
-			sem_wait(g_phi.read_time_sem);
-			if ((get_time() - g_phi.philo_threads[i].last_time_eat) >= g_phi.tt_die)
+			pthread_mutex_lock(&(g_phi.phi_unit[i].read_time_mutex));
+			if ((get_time() - g_phi.phi_unit[i].last_time_eat) >= g_phi.tt_die)
 			{
 				g_phi.dead = true;
-				sem_post(g_phi.read_time_sem);
+				pthread_mutex_unlock(&(g_phi.phi_unit[i].read_time_mutex));
 				display_act(i + 1, S_DIE);
 				return (NULL);
 			}
-			sem_post(g_phi.read_time_sem);
+			pthread_mutex_unlock(&(g_phi.phi_unit[i].read_time_mutex));
 			i++;
 			usleep(1000);
 		}
@@ -50,9 +50,9 @@ void	eating_routine(t_thread *philo)
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_FORK) : 0;
 	sem_post(g_phi.takef_sem);
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_EAT) : 0;
-	sem_wait(g_phi.read_time_sem);
-	philo->last_time_eat = get_time();
-	sem_post(g_phi.read_time_sem);
+	sem_wait(g_phi.finished_meal_sem);
+	philo->last_time_eat = get_timelaps();
+	sem_post(g_phi.finished_meal_sem);
 	ft_usleep(g_phi.tt_eat * 1000);
 	philo->meal_nb = philo->meal_nb + 1;
 	sem_post(g_phi.forks_sem);

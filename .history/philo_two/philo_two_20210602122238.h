@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/02 12:33:03 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/02 12:22:38 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct		s_thread
 	int				phi_nb;
 	int				meal_nb;
 	int				last_time_eat;
+	pthread_t		monitor_tid;
 }					t_thread;
 
 typedef struct		s_philo
@@ -62,7 +63,6 @@ typedef struct		s_philo
 	bool			dead;
 	bool			get_started;
 	char			*to_display;
-	pthread_t		monitor_tid;
 	t_thread		*philo_threads;
 	sem_t			*display_sem;
 	sem_t			*takef_sem;
@@ -79,7 +79,7 @@ int					ft_atoi(char *str);
 int					ft_strlen(char *str);
 void				*ft_calloc(int size);
 void				display_act(int nb, char *action);
-int					get_time();
+int					get_timelaps();
 int					ft_init_threads();
 void				ft_set_philothreads(t_thread *philo_threads);
 int					ft_set_gphilo(void);

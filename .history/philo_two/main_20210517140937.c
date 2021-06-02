@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/02 12:31:52 by abarot           ###   ########.fr       */
+/*   Updated: 2021/05/12 16:59:50 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@ int		ft_get_arguments(int ac, char **av)
 		return (ARG_ERROR);
 	}
 	ft_memcpy(g_phi.to_display, S_STR_TEMPL, ft_strlen(S_STR_TEMPL));
-	if ((g_phi.tt_think = (g_phi.tt_die -
-			g_phi.tt_eat - g_phi.tt_sleep) / 2) < 0)
-		g_phi.tt_think = 1;
 	if (av[5])
 	{
 		if ((g_phi.meal_lim = ft_atoi(av[5])) <= 0)
@@ -78,7 +75,6 @@ int		main(int ac, char **av)
 	sem_unlink("display_sem");
 	sem_unlink("forks_sem");
 	sem_unlink("takef_sem");
-	sem_unlink("read_time_sem");
 	gettimeofday(&g_startime, NULL);
 	if (ft_get_arguments(ac, av) != SUCCESS || ft_set_gphilo() != SUCCESS ||
 		ft_init_threads() == EXIT_FAILURE)

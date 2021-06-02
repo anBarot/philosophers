@@ -6,37 +6,33 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/02 12:33:03 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/02 12:17:05 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_two.h"
 
-void	*monitor_routine(void)
+void	*monitor_routine(t_thread *philo)
 {
-	int	i;
+	int		time;
 
 	while (g_phi.get_started == false)
 		;
 	while (g_phi.dead == false)
 	{
-		if (g_phi.is_limited_meal == true && g_phi.philo_nb == g_phi.nb_finished_threads)
+		if (g_phi.is_limited_meal == true && philo->meal_nb == g_phi.meal_lim)
 			break ;
-		i = 0;
-		while (i < g_phi.philo_nb)
+		sem_wait(g_phi.finished_meal_sem);
+		time = get_timelaps();
+		if ((time - philo->last_time_eat) >= g_phi.tt_die)
 		{
-			sem_wait(g_phi.read_time_sem);
-			if ((get_time() - g_phi.philo_threads[i].last_time_eat) >= g_phi.tt_die)
-			{
-				g_phi.dead = true;
-				sem_post(g_phi.read_time_sem);
-				display_act(i + 1, S_DIE);
-				return (NULL);
-			}
-			sem_post(g_phi.read_time_sem);
-			i++;
-			usleep(1000);
+			g_phi.dead = true;
+			display_act(philo->phi_nb + 1, S_DIE);
+			sem_post(g_phi.finished_meal_sem);
+			return (NULL);
 		}
+		sem_post(g_phi.finished_meal_sem);
+		ft_usleep(1000);
 	}
 	return (NULL);
 }
@@ -50,9 +46,9 @@ void	eating_routine(t_thread *philo)
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_FORK) : 0;
 	sem_post(g_phi.takef_sem);
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_EAT) : 0;
-	sem_wait(g_phi.read_time_sem);
-	philo->last_time_eat = get_time();
-	sem_post(g_phi.read_time_sem);
+	sem_wait(g_phi.finished_meal_sem);
+	philo->last_time_eat = get_timelaps();
+	sem_post(g_phi.finished_meal_sem);
 	ft_usleep(g_phi.tt_eat * 1000);
 	philo->meal_nb = philo->meal_nb + 1;
 	sem_post(g_phi.forks_sem);

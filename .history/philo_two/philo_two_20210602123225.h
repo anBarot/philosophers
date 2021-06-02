@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/02 12:33:03 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/02 12:32:25 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int					ft_atoi(char *str);
 int					ft_strlen(char *str);
 void				*ft_calloc(int size);
 void				display_act(int nb, char *action);
-int					get_time();
+int					get_timelaps();
 int					ft_init_threads();
 void				ft_set_philothreads(t_thread *philo_threads);
 int					ft_set_gphilo(void);
