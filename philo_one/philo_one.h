@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/18 15:00:44 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/10 10:52:17 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ void				ft_set_philothreads(t_thread *phi_unit);
 void				*philo_routine();
 int					ft_init_monitor();
 void				*monitor_routine();
+void				ft_usleep(unsigned int n);
 
 #endif

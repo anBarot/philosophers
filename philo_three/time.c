@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 16:47:16 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 17:04:06 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/10 10:55:45 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ void	display_act(int nb, char *action)
 	ft_memcpy(&(g_philo.to_display[ft_strlen(S_STR_TEMPL)]), action,
 				ft_strlen(action));
 	write(STDOUT_FILENO, g_philo.to_display, write_len);
-	sem_post(g_philo.sem.display);
+	if (g_philo.dead == false)
+		sem_post(g_philo.sem.display);
 }

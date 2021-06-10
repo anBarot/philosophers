@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/05 13:00:13 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/10 10:55:23 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ void	*monitor_routine(void)
 		time = get_timelaps();
 		if ((time - g_philo.last_time_eat) >= g_philo.time_to.die)
 		{
-			display_act(g_philo.id, S_DIE);
-			sem_wait(g_philo.sem.display);
 			g_philo.dead = true;
+			display_act(g_philo.id, S_DIE);
 			sem_post(g_philo.sem.end_program);
 			break ;
 		}
