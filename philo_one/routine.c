@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/05 12:58:52 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/10 10:36:57 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	eating_routine(t_thread *philo)
 	philo->last_time_eat = get_time();
 	pthread_mutex_unlock(&(philo->read_time_mutex));
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_EAT) : 0;
-	usleep(g_phi.tt_eat * 1000);
+	ft_usleep(g_phi.tt_eat * 1000);
 	pthread_mutex_unlock(&(g_phi.forks_mutex[philo->phi_nb]));
 	pthread_mutex_unlock(&(g_phi.forks_mutex[(philo->phi_nb + 1)
 							% g_phi.philo_nb]));
@@ -70,9 +70,9 @@ void	*philo_routine(t_thread *philo)
 {
 	while(g_phi.get_started == false)
 		;
-	(philo->phi_nb % 2) ? usleep(1000) : 0;
+	(philo->phi_nb % 2) ? ft_usleep(1000) : 0;
 	if (g_phi.philo_nb % 2 == 1 && philo->phi_nb == g_phi.philo_nb - 1)
-		usleep(2000);
+		ft_usleep(2000);
 	while (g_phi.dead == false)
 	{
 		eating_routine(philo);
@@ -85,9 +85,9 @@ void	*philo_routine(t_thread *philo)
 			return (NULL);
 		}
 		(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_SLEEP) : 0;
-		usleep(g_phi.tt_sleep * 1000);
+		ft_usleep(g_phi.tt_sleep * 1000);
 		(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_THINK) : 0;
-		(g_phi.philo_nb % 2 == 1) ? usleep(g_phi.tt_think * 1000) : 0;
+		(g_phi.philo_nb % 2 == 1) ? ft_usleep(g_phi.tt_think * 1000) : 0;
 	}
 	return (NULL);
 }
