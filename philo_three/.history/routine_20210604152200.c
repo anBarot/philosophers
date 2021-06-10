@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/05 13:00:13 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/04 15:22:01 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	*monitor_routine(void)
 			sem_post(g_philo.sem.end_program);
 			break ;
 		}
+		ft_usleep(1000);
 	}
 	return (NULL);
 }

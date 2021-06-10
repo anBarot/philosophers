@@ -6,11 +6,11 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:09:17 by abarot            #+#    #+#             */
-/*   Updated: 2021/06/05 12:58:52 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/04 15:17:42 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_two.h"
 
 void	*monitor_routine(void)
 {
@@ -25,45 +25,38 @@ void	*monitor_routine(void)
 		i = 0;
 		while (i < g_phi.philo_nb)
 		{
-			pthread_mutex_lock(&(g_phi.phi_unit[i].read_time_mutex));
-			if ((get_time() - g_phi.phi_unit[i].last_time_eat) >= g_phi.tt_die)
+			sem_wait(g_phi.read_time_sem);
+			if ((get_time() - g_phi.philo_threads[i].last_time_eat) >= g_phi.tt_die)
 			{
 				g_phi.dead = true;
-				pthread_mutex_unlock(&(g_phi.phi_unit[i].read_time_mutex));
+				sem_post(g_phi.read_time_sem);
 				display_act(i + 1, S_DIE);
 				return (NULL);
 			}
-			pthread_mutex_unlock(&(g_phi.phi_unit[i].read_time_mutex));
+			sem_post(g_phi.read_time_sem);
 			i++;
+			usleep(1000);
 		}
 	}
 	return (NULL);
 }
 
-void	taking_forks(t_thread *philo)
-{
-	(philo->phi_nb % 2) ? pthread_mutex_lock(
-		&(g_phi.forks_mutex[(philo->phi_nb + 1) % g_phi.philo_nb])) :
-		pthread_mutex_lock(&(g_phi.forks_mutex[philo->phi_nb]));
-	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_FORK) : 0;
-	(philo->phi_nb % 2) ? pthread_mutex_lock(
-		&(g_phi.forks_mutex[philo->phi_nb])) : pthread_mutex_lock(
-		&(g_phi.forks_mutex[(philo->phi_nb + 1) % g_phi.philo_nb]));
-	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_FORK) : 0;
-}
-
 void	eating_routine(t_thread *philo)
 {
-	taking_forks(philo);
-	pthread_mutex_lock(&(philo->read_time_mutex));
-	philo->last_time_eat = get_time();
-	pthread_mutex_unlock(&(philo->read_time_mutex));
+	sem_wait(g_phi.takef_sem);
+	sem_wait(g_phi.forks_sem);
+	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_FORK) : 0;
+	sem_wait(g_phi.forks_sem);
+	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_FORK) : 0;
+	sem_post(g_phi.takef_sem);
 	(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_EAT) : 0;
-	usleep(g_phi.tt_eat * 1000);
-	pthread_mutex_unlock(&(g_phi.forks_mutex[philo->phi_nb]));
-	pthread_mutex_unlock(&(g_phi.forks_mutex[(philo->phi_nb + 1)
-							% g_phi.philo_nb]));
+	sem_wait(g_phi.read_time_sem);
+	philo->last_time_eat = get_time();
+	sem_post(g_phi.read_time_sem);
+	ft_usleep(g_phi.tt_eat * 1000);
 	philo->meal_nb = philo->meal_nb + 1;
+	sem_post(g_phi.forks_sem);
+	sem_post(g_phi.forks_sem);
 }
 
 void	*philo_routine(t_thread *philo)
@@ -78,14 +71,15 @@ void	*philo_routine(t_thread *philo)
 		eating_routine(philo);
 		if (g_phi.is_limited_meal == true && philo->meal_nb == g_phi.meal_lim)
 		{
-			(g_phi.dead == false) ? display_act(philo->phi_nb, S_REACHED) : 0;
-			pthread_mutex_lock(&g_phi.finished_meal_mutex);
+			(g_phi.dead == false) ? display_act(philo->phi_nb + 1,
+												S_REACHED) : 0;
+			sem_wait(g_phi.finished_meal_sem);
 			g_phi.nb_finished_threads = g_phi.nb_finished_threads + 1;
-			pthread_mutex_unlock(&g_phi.finished_meal_mutex);
+			sem_post(g_phi.finished_meal_sem);
 			return (NULL);
 		}
 		(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_SLEEP) : 0;
-		usleep(g_phi.tt_sleep * 1000);
+		ft_usleep(g_phi.tt_sleep * 1000);
 		(g_phi.dead == false) ? display_act(philo->phi_nb + 1, S_THINK) : 0;
 		(g_phi.philo_nb % 2 == 1) ? usleep(g_phi.tt_think * 1000) : 0;
 	}

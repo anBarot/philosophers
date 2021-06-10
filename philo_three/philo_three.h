@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 19:18:48 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 18:19:53 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/04 15:22:15 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct		s_time
 	int				die;
 	int				eat;
 	int				sleep;
+	int				think;
 }					t_time;
 
 typedef struct		s_eat

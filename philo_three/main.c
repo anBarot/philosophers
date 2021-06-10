@@ -6,7 +6,7 @@
 /*   By: abarot <abarot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/30 11:57:49 by abarot            #+#    #+#             */
-/*   Updated: 2021/05/12 16:38:34 by abarot           ###   ########.fr       */
+/*   Updated: 2021/06/04 15:23:45 by abarot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ int		ft_get_arguments(int ac, char **av)
 		write(1, S_ERR_ARG, ft_strlen(S_ERR_ARG));
 		return (ARG_ERROR);
 	}
+	if ((g_philo.time_to.think = (g_philo.time_to.die -
+			g_philo.time_to.eat - g_philo.time_to.sleep) / 2) < 0)
+		g_philo.time_to.think = 1;
 	if (av[5])
 	{
 		if ((g_philo.eat_info.meal_lim = ft_atoi(av[5])) <= 0)
